@@ -1,8 +1,8 @@
 {
-  "name": "frontend-boilerplate",
-  "version": "1.0.0",
+  "name": "d3lanes",
+  "version": "0.0.1",
   "private": true,
-  "description": "A boilerplate of things that shouldn't exist",
+  "description": "REDUX model implementation of an unframed window and d3v4 animation",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -26,14 +26,6 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.7.1",
     "babel-runtime": "^6.5.0",
-    "classnames": "^2.2.3",
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0",
-    "react-hot-loader": "^1.3.0",
-    "react-redux": "^4.4.0",
-    "react-router": "^2.0.0",
-    "react-router-redux": "^4.0.0",
-    "redux": "^3.3.1",
-    "redux-actions": "^0.9.1"
+    "classnames": "^2.2.3"
   }
 }

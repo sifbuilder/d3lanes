@@ -1,22 +1,22 @@
 
-# Frontend Boilerplate
+# d3lanes
 
-A boilerplate of things that mostly shouldn't exist.
+REDUX model implementation of an unframed window and d3v4 animation
 
-## Contains
+## Author
 
-- [x] [Webpack](https://webpack.github.io)
-- [x] [React](https://facebook.github.io/react/)
-- [x] [Redux](https://github.com/reactjs/redux)
-- [x] [Babel](https://babeljs.io/)
-- [x] [Autoprefixer](https://github.com/postcss/autoprefixer)
-- [x] [PostCSS](https://github.com/postcss/postcss)
-- [x] [CSS modules](https://github.com/outpunk/postcss-modules)
-- [x] [Rucksack](http://simplaio.github.io/rucksack/docs)
-- [x] [React Router Redux](https://github.com/reactjs/react-router-redux)
-- [x] [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension)
-- [ ] Redux effects
-- [x] TodoMVC example
+inspired on
+- [x] [Swizec Teller's particles](http://swizec.com/blog/animating-with-react-redux-and-d3/swizec/6775)
+- [x] [Michael Shapiro's message sequence](https://github.com/koudelka/d3-message-sequence)
+
+built upon
+- [x] [Mike Bostock's D3jsv4](https://github.com/d3)
+- [x] [Dan Abramov's Redux](https://github.com/reactjs/redux)
+- [x] [TJ Holowaychuk's frontend-boilerplate](https://github.com/tj/frontend-boilerplate)
+
+having found useful 
+- [x] [Kent C. Dodds' How to Contribute to an Open Source Project on GitHub] (https://github.com/eggheadio-github/stack-overflow-copy-paste)
+
 
 ## Setup
 
@@ -35,10 +35,6 @@ $ npm start
 ```
 $ npm run build
 ```
-
-## Note
-
-This is just my personal boilerplate, it may or may not be a good fit for your project(s).
 
 # License
 

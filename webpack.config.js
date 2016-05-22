@@ -6,15 +6,7 @@ module.exports = {
   context: path.join(__dirname, './client'),
   entry: {
     jsx: './index.js',
-    html: './index.html',
-    vendor: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router',
-      'react-router-redux',
-      'redux'
-    ]
+    html: './index.html'
   },
   output: {
     path: path.join(__dirname, './static'),
@@ -44,8 +36,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loaders: [
-          'react-hot',
-          'babel-loader'
+           'babel-loader'
         ]
       },
     ],
@@ -59,7 +50,7 @@ module.exports = {
     })
   ],
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+    new webpack.optimize.CommonsChunkPlugin('vendor'),
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') }
     })
