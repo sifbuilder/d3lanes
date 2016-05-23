@@ -23,6 +23,7 @@ if (typeof require === "function") {
 				.attr("id", store.getState().configReducer.containerId)
 				.style('width', store.getState().courtReducer.svgWidth)
 				.style('height', store.getState().courtReducer.svgHeight)
+				.style('background', 'oldlace')
 				.attr('class', 'bar-chart')			// 
 				.style('border', '1px solid darkgrey')
 				.attr('viewbox',"0 0 3 2")										

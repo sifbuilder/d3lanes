@@ -57,7 +57,7 @@ var initialStateConfig = {
 			fadeFactor: 3,	// times beat - fade items
 			periodFactor: 4, // times beat - add items
 			vstep: 50,
-			itemSpan: 5,
+			itemSpan: 7,
 			itemProps: ['to', 'from'],
 			itemVal: 'msg',
 			messageCollection_000: [
@@ -82,49 +82,41 @@ var initialStateConfig = {
 				 {id: "19", from: "manager", to: "barrista2", msg: "fire"},
 			],
 			messageCollection: [
-				 {id: "1", from: "app", to: "app", msg: "create store"},
-				 {id: "2", from: "store", to: "store", msg: "subscribe lanes"},
-				 {id: "3", from: "store", to: "store", msg: "subscribe particles"},
-				 {id: "4", from: "app", to: "app", msg: "create svg container"},
-				 {id: "5", from: "app", to: "app", msg: "control kbd events"},
-				 {id: "6", from: "app", to: "app", msg: "control mouse events"},
-				 {id: "7", from: "app", to: "app", msg: "get data records"},
-				 {id: "8", from: "ticker", to: "ticker", msg: "subscribe window listeners"},
-				 {id: "9", from: "ticker", to: "ticker", msg: "subscribe step listeners"},
-				 {id: "10", from: "ticker", to: "ticker", msg: "initiate steps "},
-				 {id: "11", from: "app", to: "store", msg: "tell to dispatch setRecords action"},
-				 {id: "12", from: "store", to: "reducer", msg: "dispatch setRecords action"},
-				 {id: "13", from: "reducer", to: "reducer", msg: "run action on state"},
-				 {id: "14", from: "reducer", to: "reducer", msg: "added msg and return new state"},
-				 {id: "15", from: "ticker", to: "ticker", msg: "run listeners with new state"},
-				 {id: "16", from: "component", to: "UI", msg: "render lanes"},
-				 {id: "17", from: "UI", to: "app", msg: "send left arrow event"},
-				 {id: "18", from: "app", to: "store", msg: "tell to dispatch setMode action"},
-				 {id: "19", from: "store", to: "reducer", msg: "tell to run setMode action"},
-				 {id: "20", from: "reducer", to: "reducer", msg: "run action with state"},
-				 {id: "21", from: "reducer", to: "reducer", msg: "return new state with walk mode"},
-				 {id: "22", from: "ticker", to: "ticker", msg: "run listeners with new state"},
-				 {id: "23", from: "component", to: "UI", msg: "show render stopped"},
-				 {id: "24", from: "UI", to: "app", msg: "send down arrow event"},
-				 {id: "25", from: "app", to: "store", msg: "tell to dispatch setRecods action"},
-				 {id: "26", from: "store", to: "reducer", msg: "tell to run setRecod action"},
-				 {id: "27", from: "reducer", to: "reducer", msg: "run action with state"},
-				 {id: "28", from: "reducer", to: "reducer", msg: "return new set of records"},
+				 {id: "1", from: "app", to: "store", msg: "create store"},
+				 {id: "2", from: "store", to: "store", msg: "subscribe lanes listener"},
+				 {id: "3", from: "store", to: "store", msg: "subscribe particles listener"},
+				 {id: "4", from: "app", to: "app", msg: "start kbd controller"},
+				 {id: "5", from: "app", to: "app", msg: "start mouse controller"},
+				 {id: "6", from: "ticker", to: "ticker", msg: "subscribe tickParticles"},
+				 {id: "7", from: "ticker", to: "ticker", msg: "subscribe setRecords"},
+				 {id: "8", from: "ticker", to: "ticker", msg: "start auto"},
+				 {id: "9", from: "store", to: "reducer", msg: "dispatch setRecords action"},
+				 {id: "10", from: "reducer", to: "reducer", msg: "apply action logic"},
+				 {id: "11", from: "reducer", to: "store", msg: "return new state"},
+				 {id: "12", from: "ticker", to: "ticker", msg: "run listeners"},
+				 {id: "13", from: "component", to: "UI", msg: "render lanes"},
+				 {id: "14", from: "UI", to: "app", msg: "trigger left arrow event"},
+				 {id: "15", from: "store", to: "reducer", msg: "dispatch setMode action"},
+				 {id: "16", from: "reducer", to: "reducer", msg: "run action"},
+				 {id: "17", from: "reducer", to: "store", msg: "return new state"},
+				 {id: "18", from: "ticker", to: "ticker", msg: "run listeners"},
+				 {id: "19", from: "UI", to: "app", msg: "send down arrow event"},
+				 {id: "20", from: "store", to: "reducer", msg: "dispatch setRecods action"},
+				 {id: "21", from: "reducer", to: "reducer", msg: "run action and get record"},
+				 {id: "22", from: "reducer", to: "reducer", msg: "return new set"},
+				 {id: "23", from: "ticker", to: "ticker", msg: "run listeners"},
+				 {id: "24", from: "component", to: "UI", msg: "render lanes"},
+				 {id: "25", from: "UI", to: "app", msg: "send right arrow event"},
+				 {id: "26", from: "store", to: "reducer", msg: "dispatch setMode action"},
+				 {id: "27", from: "reducer", to: "reducer", msg: "run action"},
+				 {id: "28", from: "reducer", to: "reducer", msg: "return new mode auto"},
 				 {id: "29", from: "ticker", to: "ticker", msg: "run listeners with new state"},
-				 {id: "30", from: "component", to: "UI", msg: "show render lanes"},
-				 {id: "31", from: "UI", to: "app", msg: "send right arrow event"},
-				 {id: "32", from: "app", to: "store", msg: "tell to dispatch setMode action"},
-				 {id: "33", from: "store", to: "reducer", msg: "tell to run setMode action"},
-				 {id: "34", from: "reducer", to: "reducer", msg: "run action with state"},
-				 {id: "35", from: "reducer", to: "reducer", msg: "return new mode auto"},
-				 {id: "36", from: "ticker", to: "ticker", msg: "run listeners with new state"},
-				 {id: "37", from: "component", to: "UI", msg: "auto lanes render"},
-				 {id: "38", from: "app", to: "store", msg: "tell to dispatch createParticles action"},
-				 {id: "39", from: "store", to: "reducer", msg: "tell to run createParticles action"},
-				 {id: "40", from: "reducer", to: "reducer", msg: "run action with state"},
-				 {id: "41", from: "reducer", to: "reducer", msg: "return new state with particles"},
-				 {id: "42", from: "ticker", to: "ticker", msg: "run particles listeners"},
-				 {id: "43", from: "component", to: "UI", msg: "render particles in window animation"},
+				 {id: "30", from: "component", to: "UI", msg: "render auto lanes"},
+				 {id: "31", from: "store", to: "reducer", msg: "dispatch createParticles action"},
+				 {id: "32", from: "reducer", to: "reducer", msg: "run action"},
+				 {id: "33", from: "reducer", to: "store", msg: "return new state with particles"},
+				 {id: "34", from: "ticker", to: "ticker", msg: "run particles listeners"},
+				 {id: "35", from: "component", to: "UI", msg: "render particles"},
 			],			
 }
 function configReducer(state = initialStateConfig, action) {
@@ -396,12 +388,12 @@ function lanesReducer(state = initialStateLanes, action) {
 							var records = state.recordsCollection
 							var numRecords = records.length
 							if (vHigh >= vLow) vHigh = vHigh + 1	// add one to upper border
-							if (vHigh >= numRecords) vHigh = -1		// upper border
+							if (vHigh > numRecords) vHigh = -1		// upper border
 							if (((vHigh - vLow) > itemSpan) 			// all spteps full
 									|| (vHigh == -1) 									// infinitum with vLow active
 									|| (vLow == -1) 									// get always from reset
 									) vLow = vLow + 1									// increase lower border
-							if (vLow >= numRecords) vLow = -1			// reset at end of cycle
+							if (vLow > numRecords) vLow = -1			// reset at end of cycle
 							r = Object.assign({}, state, {
 								records: state.recordsCollection.slice(vLow, vHigh),
 								messagesCursorLow: vLow,
@@ -455,7 +447,7 @@ var initialStateParticles = {
 			particles: [],
 			particleIndex: 0,
 			particlesGenerating: false,
-			particlesPerTick: 10,
+			particlesPerTick: 33,
 			particleRadio: 9,
 }
 function particlesReducer(state = initialStateParticles, action) {

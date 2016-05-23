@@ -217,7 +217,7 @@ var intransition = false
 											.attr("text-anchor", "middle")
 											.attr("alignment-baseline", "middle")
 											.style("font-size", function(d, i) { 
-													return parseInt(svgContainer.style("width")) * 3/100
+													return parseInt(svgContainer.style("width")) * 2/100
 													})
 											.text(function(d) { return d.name })
 											.attr("dy", "20")
@@ -283,7 +283,7 @@ var intransition = false
 							.style("font-family", "sans-serif")
 											.style("fill", "transparent")
 							.style("font-size", function(d, i) { 
-												return parseInt(svgContainer.style("width")) * 3/100
+												return parseInt(svgContainer.style("width")) * 2/100
 													})
 							.text(function(d) { return d.name })
 							.attr("dy", "20")
@@ -423,7 +423,7 @@ var intransition = false
 											.attr("class", "message")
 											.style("fill", "transparent")
 											.style("font-size", function(d, i) {
-													return parseInt(svgContainer.style("width")) * 3/100
+													return parseInt(svgContainer.style("width")) * 2/100
 													})
 											.attr("dy", ".15em")
 											.attr("text-anchor", d.from == d.to ? "end" : "middle")

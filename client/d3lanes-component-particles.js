@@ -61,7 +61,7 @@ var intransition = false
 												var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
 												return color( ((3*r)%10 / 10) + (Math.random()* 3 /10))
 											})
-											.style("fill-opacity", 0.4)
+											.style("fill-opacity", 0.2)
 					            .style("stroke", "none")
 
 								
