@@ -52,7 +52,7 @@ var initialStateConfig = {
 			modeLabels: {autoMode: 'auto', walkMode: 'walk'},
 			views: {lanesView: 'lanesView'},
 			gravity: 0.5,
-			randNormal: d3.randomNormal(0.3, 2),
+			randNormal: d3.randomNormal(1.3, 2),
 			randNormal2: d3.randomNormal(0.5, 1.8),
 			containerElem: '#container',
 			containerId: 'svgid',
@@ -61,7 +61,7 @@ var initialStateConfig = {
 			fadeFactor: 3,	// times beat - fade items
 			periodFactor: 4, // times beat - add items
 			vstep: 50,
-			itemSpan: 7,
+			itemSpan: 6,
 			itemProps: ['to', 'from'],
 			itemVal: 'msg',
 			messageCollection_000: [
@@ -164,8 +164,8 @@ function switchDebugMode(state, action) {
 
 // _____________ COURT
 var initialStateCourt = {
-			svgHeight: 600,		// 
-			svgWidth: 900,		// 
+			svgHeight: 400,		// 
+			svgWidth: 600,		// 
 			keys: [],
 			notice: 'auto lanes',
 			currentMode: 'autoMode',
@@ -473,7 +473,6 @@ function particlesReducer(state = initialStateParticles, action) {
 						var i
             for (i = 0; i < action.N; i++) {
 						
-						
 										var ref = parseInt(action.x)
 										var closestLaneUp = action.lanes
 														.filter(function (d) {return d.x >= ref} )
@@ -486,9 +485,6 @@ function particlesReducer(state = initialStateParticles, action) {
 														.reduce(function (prev, curr) {
 											return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
 										}, {id: 'init', x: action.xInit})									
-									// console.log("___________________ ref, closestLaneDown, closestLaneUp: ", ref, closestLaneDown, closestLaneUp)
-						
-						
 						
                 var particle = {id: state.particleIndex+i,
 																	x: action.x,
@@ -520,32 +516,35 @@ function particlesReducer(state = initialStateParticles, action) {
 								.filter(function (p) {
 											return (!(p.y > svgHeight))
 									})
+								.filter(function (p) {
+											return (!(p.y < 0))
+									})
 								.map(function (p) {
-											var vx = p.vector[0]
-											var vy = p.vector[1]
-											p.x += vx
-											p.y += vy
+										var vx = p.vector[0]
+										var vy = p.vector[1]
+										p.x += vx
+										p.y += vy
 
 										var ref = parseInt(p.x)
 
-							var laneUp = action.lanes
-									.filter(function(l) {
-										return (l.id == p.closestLaneUp.id)
-										})
-							p.closestLaneUp.x = (laneUp.length > 0 ) ? +laneUp[0].x : +p.closestLaneUp.x
-							
-								var laneDown = action.lanes
-									.filter(function(l) {
-										return (l.id == p.closestLaneDown.id)
-										})
-							 p.closestLaneDown.x = (laneDown.length > 0 ) ? +laneDown[0].x : +p.closestLaneDown.x
+										var laneUp = action.lanes
+												.filter(function(l) {
+													return (l.id == p.closestLaneUp.id)
+													})
+										p.closestLaneUp.x = (laneUp.length > 0 ) ? +laneUp[0].x : +p.closestLaneUp.x
+										
+										var laneDown = action.lanes
+												.filter(function(l) {
+													return (l.id == p.closestLaneDown.id)
+													})
+										 p.closestLaneDown.x = (laneDown.length > 0 ) ? +laneDown[0].x : +p.closestLaneDown.x
 
-											if (ref < (p.closestLaneDown.x + state.particleRadio) || ref > (p.closestLaneUp.x - state.particleRadio)) {
-													p.vector[0] = -p.vector[0] 
-												}
-											p.vector[1] += gravity
-											return p
-									});
+										if (ref < (p.closestLaneDown.x + state.particleRadio) || ref > (p.closestLaneUp.x - state.particleRadio)) {
+												p.vector[0] = -p.vector[0] 
+											}
+										p.vector[1] += gravity + 2 * gravity * (p.y - svgHeight) / svgHeight
+										return p
+							});
 							return Object.assign({}, state, {
 										particles: movedParticles,
 										particleIndex: movedParticles.length,

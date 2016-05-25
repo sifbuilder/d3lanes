@@ -39,6 +39,21 @@ if (typeof require === "function") {
 				store.getState().configReducer.messageCollection))
 		store.dispatch(actions.setRecordsFetched(true))
 		
+		// jff
+		store.dispatch(actions.startParticles())
+		store.dispatch(actions.createParticles({
+				particlesPerTick: store.getState().particlesReducer.particlesPerTick * 5,
+				x: store.getState().courtReducer.svgWidth / 2, 
+				y: store.getState().courtReducer.svgWidth / 2,
+				xInit: 0, 
+				xEnd: store.getState().courtReducer.svgWidth, 
+				randNormal: store.getState().configReducer.randNormal,
+				randNormal2:store.getState().configReducer.randNormal2,
+				lanes: [],
+		}))
+		store.dispatch(actions.stopParticles())
+		
+		
 		var ticker = d3lanesControls.tickControls(store)
 		.subscribe(
 			store.compose(
