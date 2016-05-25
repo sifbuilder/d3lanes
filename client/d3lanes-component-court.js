@@ -44,11 +44,11 @@ if (typeof require === "function") {
 			// _________________________________ render Notice Update
 				var errorNotice = (state.courtReducer.notice) ? state.courtReducer.notice : ""
 				var noticeToShow = " " +
-								"click mouse" + 
+								"click particles arrow mode" + 
 								" - " + state.configReducer.modeLabels[state.configReducer.modes[state.courtReducer.currentMode]] + 
 								" - " + parseInt(svg.style("width")) + " x " + parseInt(svg.style("height")) +
 								" - N: " + state.particlesReducer.particleIndex + 
-								" fps: " + state.debugReducer.fps
+								" - fps: " + state.debugReducer.fps
 
 
 				var winWidthPixels = parseInt(svg.style("width"))
