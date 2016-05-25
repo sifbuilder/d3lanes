@@ -1,3 +1,7 @@
+/* 														*/
+/*    d3lanes-reducer.js      */
+/* 														*/
+
 	if (typeof require === "function") {
 		var d3 = require('./d3.v4.0.0-alpha.40.js')
 		var d3lanesActions = require('./d3lanes-actions.js')

@@ -1,3 +1,7 @@
+/* 														*/
+/*    		 index.js           */
+/* 														*/
+
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.40.js')
 	var d3lanesComponentLanes = require('./d3lanes-component-lanes.js')

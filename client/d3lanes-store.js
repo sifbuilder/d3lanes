@@ -1,7 +1,8 @@
-/* 			=======================================					*/
-/* 			code adapted from REDUX http://redux.js.org/		*/
-/* 			=======================================					*/
-	
+/* 														*/
+/*    d3lanes-store.js        */
+/* 														*/
+
+/* adapted from REDUX http://redux.js.org/		*/
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
