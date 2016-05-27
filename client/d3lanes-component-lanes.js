@@ -101,7 +101,7 @@ if (typeof require === "function") {
 
 // _____________ context
 var stateLanes = {
-	lanesReducer: {}
+	reducerLanes: {}
 }
 var intransition = false
 	
@@ -110,18 +110,18 @@ var intransition = false
 		if (intransition == true) {
 			return
 		}
-		if (JSON.stringify(stateLanes.lanesReducer.records) === JSON.stringify(newState.lanesReducer.records)) {
+		if (JSON.stringify(stateLanes.reducerLanes.records) === JSON.stringify(newState.reducerLanes.records)) {
 			return 
 		}
 
 
 		// DATA
 		// store previous - will not change during render
-		var _messages0 = stateLanes.lanesReducer.records || []
+		var _messages0 = stateLanes.reducerLanes.records || []
 		var state = stateLanes = newState
-		var _messages1 = state.lanesReducer.records
-		var _fadeTime = state.configReducer.fadeFactor * state.configReducer.beatTime
-		var _itemProps = state.configReducer.itemProps
+		var _messages1 = state.reducerLanes.records
+		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
+		var _itemProps = state.reducerConfig.itemProps
 			
 		// SVG
 		var svgContainer = d3.select('body')
@@ -131,11 +131,11 @@ var intransition = false
 			svgContainer
 				.enter()
 				.append("svg")
-					.attr("id", state.configReducer.container)
+					.attr("id", state.reducerConfig.container)
 			
 			svgContainer
-					.style('width', state.courtReducer.svgWidth)
-					.style('height', state.courtReducer.svgHeight)
+					.style('width', state.reducerCourt.svgWidth)
+					.style('height', state.reducerCourt.svgHeight)
 
 			var messagesGroup = d3.select('svg')
 				.selectAll('g.messages')		// items
@@ -353,7 +353,7 @@ var intransition = false
 											return r
 										})
 									.attr("y", function(d, i, s) { 
-											var r = (i + 2) * state.configReducer.vstep - 10 
+											var r = (i + 2) * state.reducerConfig.vstep - 10 
 											return r  // (i+1)*10 
 									})
 									.on("start", function start() {		
@@ -375,11 +375,11 @@ var intransition = false
 										return r
 							})
 							.attr("y1", function(d, i) {
-									var r = (i + 2) * state.configReducer.vstep; 
+									var r = (i + 2) * state.reducerConfig.vstep; 
 									return r 
 								})
 							.attr("y2", function(d, i) {
-									var r = (i + 2) * state.configReducer.vstep; 
+									var r = (i + 2) * state.reducerConfig.vstep; 
 									return r 
 							})								
 							.on("start", function start() {		
@@ -433,7 +433,7 @@ var intransition = false
 											.attr("text-anchor", d.from == d.to ? "end" : "middle")
 											.attr("alignment-baseline", d.from == d.to ? "middle" : "autoMode")
 												.text(d.msg)
-												.attr("y", (i + 2) * state.configReducer.vstep - 10)
+												.attr("y", (i + 2) * state.reducerConfig.vstep - 10)
 												.attr("x", function() {
 													var x1 = coordsUtils().hcoord_pct(_laneItems1, d.from)
 													var x2 = coordsUtils().hcoord_pct(_laneItems1, d.to)
@@ -501,11 +501,11 @@ var intransition = false
 												.attr("stroke", "transparent")
 												.attr("stroke-width", 1)
 												.attr("y1", function() {
-														var r = (i + 2) * state.configReducer.vstep ; 
+														var r = (i + 2) * state.reducerConfig.vstep ; 
 														return r 
 													})
 												.attr("y2", function() {
-														var r = (i + 2) * state.configReducer.vstep ; 
+														var r = (i + 2) * state.reducerConfig.vstep ; 
 														return r 
 												})	
 												.attr("x1", coordsUtils().hcoord_tagged_pct(_laneItems1, d.from))

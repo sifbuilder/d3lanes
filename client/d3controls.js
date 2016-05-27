@@ -34,19 +34,19 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		tc.start = function start() {
-					var periodFactor = store.getState().configReducer.periodFactor					
-					var beatTime = store.getState().configReducer.beatTime				
+					var periodFactor = store.getState().reducerConfig.periodFactor					
+					var beatTime = store.getState().reducerConfig.beatTime				
 					var periodTime = periodFactor	* beatTime // items added						
 							
-					var itemSpan = store.getState().configReducer.itemSpan
+					var itemSpan = store.getState().reducerConfig.itemSpan
 							
-					var tickspan = store.getState().configReducer.tickspan
-					var vLow = store.getState().lanesReducer.messagesCursorLow
-					var vHigh = store.getState().lanesReducer.messagesCursorHigh
+					var tickspan = store.getState().reducerConfig.tickspan
+					var vLow = store.getState().reducerLanes.messagesCursorLow
+					var vHigh = store.getState().reducerLanes.messagesCursorHigh
 
 					var tf = setInterval(function() {
 						
-						var currentMode = store.getState().courtReducer.currentMode
+						var currentMode = store.getState().reducerCourt.currentMode
 																	
 						var listeners = currentListeners = nextListeners
 						for (var i = 0; i < listeners.length; i++) {
@@ -164,14 +164,14 @@ if (typeof require === "function") {
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
 				store.dispatch(actions.startParticles())
 				store.dispatch(actions.createParticles({
-						particlesPerTick: store.getState().particlesReducer.particlesPerTick,
+						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 						x: coords[0], 
 						y: coords[1],
 						xInit: 0, 
-						xEnd: store.getState().courtReducer.svgWidth, 
-						randNormal: store.getState().configReducer.randNormal,
-						randNormal2: store.getState().configReducer.randNormal2,
-						lanes: store.getState().lanesReducer.lanes,
+						xEnd: store.getState().reducerCourt.svgWidth, 
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						lanes: store.getState().reducerLanes.lanes,
 				}))
 			}
 			var touchstart = function touchstart(svg) {
@@ -179,31 +179,31 @@ if (typeof require === "function") {
 				store.dispatch(actions.updateTouchPos(coords[0], coords[1]))
 				store.dispatch(actions.startParticles())
 				store.dispatch(actions.createParticles({
-						particlesPerTick: store.getState().particlesReducer.particlesPerTick,
+						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 						x: coords[0], 
 						y: coords[1],
 						xInit: 0, 
-						xEnd: store.getState().courtReducer.svgWidth, 
-						randNormal: store.getState().configReducer.randNormal,
-						randNormal2: store.getState().configReducer.randNormal2,
-						lanes: store.getState().lanesReducer.lanes,
+						xEnd: store.getState().reducerCourt.svgWidth, 
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						lanes: store.getState().reducerLanes.lanes,
 				}))
 			}
 			var mousemove = function mousemove(svg) {
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				var generating = store.getState().particlesReducer.particlesGenerating
+				var generating = store.getState().reducerParticles.particlesGenerating
 				if (generating === true) {
 
 					store.dispatch(actions.createParticles({
-							particlesPerTick: store.getState().particlesReducer.particlesPerTick,
+							particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 							x: coords[0], 
 							y: coords[1],
 							xInit: 0, 
-							xEnd: store.getState().courtReducer.svgWidth, 
-							randNormal: store.getState().configReducer.randNormal,
-							randNormal2: store.getState().configReducer.randNormal2,
-							lanes: store.getState().lanesReducer.lanes,
+							xEnd: store.getState().reducerCourt.svgWidth, 
+							randNormal: store.getState().reducerConfig.randNormal,
+							randNormal2: store.getState().reducerConfig.randNormal2,
+							lanes: store.getState().reducerLanes.lanes,
 					}))
 				}
 			}
@@ -213,7 +213,7 @@ if (typeof require === "function") {
 			}	
 			var mouseup = function mouseup(svg) {
 				store.dispatch(actions.stopParticles())
-				var generating = store.getState().particlesReducer.particlesGenerating
+				var generating = store.getState().reducerParticles.particlesGenerating
 			}	
 			var touchend = function touchend(svg) {
 				store.dispatch(actions.stopParticles())
@@ -254,7 +254,7 @@ function kbdControls(store) {
 			e.preventDefault();			
 			
 			store.dispatch(actions.setKeybKey(e.keyCode))
-			var keys = 	store.getState().courtReducer.keys
+			var keys = 	store.getState().reducerCourt.keys
 			
 			// keys[e.keyCode] = true;
 			if (keys[70] && keys[17])										fKeyCtrl()		// change currentView
@@ -275,10 +275,10 @@ function kbdControls(store) {
 			// ____________________ fKeyCtrl
 		var fKeyCtrl = function fKeyCtrl() {		// change view
 				// // Ctrl 17 + Shift 16  + f 70
-				var views = Object.keys(store.getState().configReducer.views)
-				var idx = views.indexOf(store.getState().courtReducer.currentView)
+				var views = Object.keys(store.getState().reducerConfig.views)
+				var idx = views.indexOf(store.getState().reducerCourt.currentView)
 				var newIdx = idx + 1 % views.length
-				var newview = store.getState().configReducer.views[views[newIdx]]
+				var newview = store.getState().reducerConfig.views[views[newIdx]]
 				store.dispatch(actions.setView(newview))
 		}
 			// ____________________ dKeyCtrl
@@ -321,26 +321,26 @@ function kbdControls(store) {
 		}
 		// ____________________ upArrow
 		var upArrow = function upArrow() {
-			var currentMode = store.getState().courtReducer.currentMode
+			var currentMode = store.getState().reducerCourt.currentMode
 			if (currentMode == 'autoMode') {
 				var newMode = 'walkMode'
 				store.dispatch(actions.setMode(newMode))
 			} else if (currentMode == 'walkMode') {
 
-						var itemSpan = store.getState().configReducer.itemSpan
+						var itemSpan = store.getState().reducerConfig.itemSpan
 						store.dispatch(actions.walkUpRecords(itemSpan, currentMode))
 
 			}
 		}
 		// ____________________ downArrow
 		var downArrow = function downArrow() {
-			var currentMode = store.getState().courtReducer.currentMode
+			var currentMode = store.getState().reducerCourt.currentMode
 			if (currentMode == 'autoMode') {
 				var newMode = 'walkMode'
 				store.dispatch(actions.setMode(newMode))
 			} else if (currentMode == 'walkMode') {
 
-					var itemSpan = store.getState().configReducer.itemSpan
+					var itemSpan = store.getState().reducerConfig.itemSpan
 					store.dispatch(actions.walkDownRecords(itemSpan, currentMode))
 
 			}

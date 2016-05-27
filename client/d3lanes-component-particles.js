@@ -14,7 +14,7 @@ if (typeof require === "function") {
 
 // _____________ context
 var stateParticles = {
-	particlesReducer: {}
+	reducerParticles: {}
 }
 var rendering = false
 var intransition = false
@@ -22,12 +22,12 @@ var intransition = false
 	// _______________________ render
 	function render(newState) {
 		if (rendering == true) return
-		if (newState.particlesReducer.particles.length == 0) return
+		if (newState.reducerParticles.particles.length == 0) return
 	
 
 		rendering = true
 			var state = stateParticles= newState
-			var particleRadio = state.particlesReducer.particleRadio || 6.33
+			var particleRadio = state.reducerParticles.particleRadio || 6.33
 
 			var svgContainer = d3.select('body')
 					.selectAll('svg')
@@ -36,11 +36,11 @@ var intransition = false
 					svgContainer
 						.enter()
 						.append("svg")
-							.attr("id", state.configReducer.container)
+							.attr("id", state.reducerConfig.container)
 					
 					svgContainer
-							.style('width', state.courtReducer.svgWidth)
-							.style('height', state.courtReducer.svgHeight)
+							.style('width', state.reducerCourt.svgWidth)
+							.style('height', state.reducerCourt.svgHeight)
 
 					var itemsGroup = d3.select('svg')
 						.selectAll('g.particles')		// items
@@ -57,7 +57,7 @@ var intransition = false
 							var particleElements = svgContainer
 								.select("g.particles")
 									.selectAll("circle")
-									.data(state.particlesReducer.particles)
+									.data(state.reducerParticles.particles)
 											.attr('cx', function(d, i, a) { return d.x })
 											.attr('cy', function(d, i, a) { return d.y })
 											.attr('r', function(d, i, a) { return particleRadio })

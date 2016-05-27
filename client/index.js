@@ -18,15 +18,16 @@ if (typeof require === "function") {
 		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
 		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
 		var actions = d3lanesActions.ActionCreators
+
 		
-		var svgContainer = d3.select(store.getState().configReducer.containerElem)
+		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
 			.selectAll('svg')
 				.data(['svg'])		
 		var svgContainerNew = svgContainer.enter()
 			.append("svg")
-				.attr("id", store.getState().configReducer.containerId)
-				.style('width', store.getState().courtReducer.svgWidth)
-				.style('height', store.getState().courtReducer.svgHeight)
+				.attr("id", store.getState().reducerConfig.containerId)
+				.style('width', store.getState().reducerCourt.svgWidth)
+				.style('height', store.getState().reducerCourt.svgHeight)
 				.style('background', 'oldlace')
 				.attr('class', 'bar-chart')			// 
 				.style('border', '1px solid darkgrey')
@@ -36,19 +37,19 @@ if (typeof require === "function") {
 		d3lanesControls.mouseControls(store).startMouseEvents(d3.select('svg'))
 
 		store.dispatch(actions.setRecordsCollection(
-				store.getState().configReducer.messageCollection))
+				store.getState().reducerConfig.messageCollection))
 		store.dispatch(actions.setRecordsFetched(true))
 		
 		// jff
 		store.dispatch(actions.startParticles())
 		store.dispatch(actions.createParticles({
-				particlesPerTick: store.getState().particlesReducer.particlesPerTick * 5,
-				x: store.getState().courtReducer.svgWidth / 2, 
-				y: store.getState().courtReducer.svgWidth / 2,
+				particlesPerTick: store.getState().reducerParticles.particlesPerTick * 5,
+				x: store.getState().reducerCourt.svgWidth / 2, 
+				y: store.getState().reducerCourt.svgWidth / 2,
 				xInit: 0, 
-				xEnd: store.getState().courtReducer.svgWidth, 
-				randNormal: store.getState().configReducer.randNormal,
-				randNormal2:store.getState().configReducer.randNormal2,
+				xEnd: store.getState().reducerCourt.svgWidth, 
+				randNormal: store.getState().reducerConfig.randNormal,
+				randNormal2:store.getState().reducerConfig.randNormal2,
 				lanes: [],
 		}))
 		store.dispatch(actions.stopParticles())
@@ -60,10 +61,10 @@ if (typeof require === "function") {
 				store.dispatch,
 				actions.tickParticles,
 				function() { return {
-											width: store.getState().courtReducer.svgWidth,
-											height: store.getState().courtReducer.svgHeight,
-											gravity: store.getState().configReducer.gravity,
-											lanes: store.getState().lanesReducer.lanes
+											width: store.getState().reducerCourt.svgWidth,
+											height: store.getState().reducerCourt.svgHeight,
+											gravity: store.getState().reducerConfig.gravity,
+											lanes: store.getState().reducerLanes.lanes
 										}
 									}
 			))
@@ -75,8 +76,8 @@ if (typeof require === "function") {
 				store.dispatch,
 				actions.setRecords,
 				function() { return {
-											itemSpan: store.getState().configReducer.itemSpan,
-											currentMode: store.getState().courtReducer.currentMode
+											itemSpan: store.getState().reducerConfig.itemSpan,
+											currentMode: store.getState().reducerCourt.currentMode
 										}
 									}
 			))

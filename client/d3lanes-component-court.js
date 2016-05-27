@@ -20,15 +20,15 @@ if (typeof require === "function") {
 			if (state === newState) return 
 				state = newState
 					
-			var svgContainer = d3.select(state.configReducer.containerElem)
+			var svgContainer = d3.select(state.reducerConfig.containerElem)
 			.selectAll('svg')
 				.data(['svg'])
 			
 			var svgContainerNew = svgContainer.enter()
 				.append("svg")
-					.attr("id", state.configReducer.containerId)
-					.style('width', state.courtReducer.svgWidth)
-					.style('height', state.courtReducer.svgHeight)
+					.attr("id", state.reducerConfig.containerId)
+					.style('width', state.reducerCourt.svgWidth)
+					.style('height', state.reducerCourt.svgHeight)
 					.attr('class', 'bar-chart')			// 
 					.style('border', '1px solid red')
 					.style('color', 'blue')	
@@ -46,13 +46,13 @@ if (typeof require === "function") {
 					.classed("notices", true)	// items
 					
 			// _________________________________ render Notice Update
-				var errorNotice = (state.courtReducer.notice) ? state.courtReducer.notice : ""
+				var errorNotice = (state.reducerCourt.notice) ? state.reducerCourt.notice : ""
 				var noticeToShow = " " +
 								"click particles arrow mode" + 
-								" - " + state.configReducer.modeLabels[state.configReducer.modes[state.courtReducer.currentMode]] + 
+								" - " + state.reducerConfig.modeLabels[state.reducerConfig.modes[state.reducerCourt.currentMode]] + 
 								" - " + parseInt(svg.style("width")) + " x " + parseInt(svg.style("height")) +
-								" - N: " + state.particlesReducer.particleIndex + 
-								" - fps: " + state.debugReducer.fps
+								" - N: " + state.reducerParticles.particleIndex + 
+								" - fps: " + state.reducerDebug.fps
 
 
 				var winWidthPixels = parseInt(svg.style("width"))
