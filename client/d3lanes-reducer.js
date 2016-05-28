@@ -4,10 +4,11 @@
 
 if (typeof require === "function") {
 	var d3lanesReducerConfig = require('./d3lanes-reducer-config.js')
-	var d3lanesReducerDebug = require('./d3lanes-reducer-debug.js')
 	var d3lanesReducerCourt = require('./d3lanes-reducer-court.js')
+	var d3lanesReducerDebug = require('./d3lanes-reducer-debug.js')
 	var d3lanesReducerLanes = require('./d3lanes-reducer-lanes.js')
 	var d3lanesReducerParticles = require('./d3lanes-reducer-particles.js')
+	var d3lanesReducerRang = require('./d3lanes-reducer-rang.js')
 }
 	
 (function (global, factory) {
@@ -56,6 +57,7 @@ var reducer = combineReducers({
 		reducerDebug: d3lanesReducerDebug.reducerDebug,
 		reducerLanes: d3lanesReducerLanes.reducerLanes,
 		reducerParticles: d3lanesReducerParticles.reducerParticles,
+		reducerRang: d3lanesReducerRang.reducerRang,
 })
 
 

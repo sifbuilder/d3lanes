@@ -153,18 +153,36 @@ var intransition = false
 				.append("g")
 					.classed("lanes", true)	// items
 
-			var marker = svgContainer.append("marker")
-				.attr("id", "message-marker")
-				.attr("viewBox", "0 0 10 10")
-				.attr("refX", "10")
-				.attr("refY", "5")
-				.attr("markerWidth", "5")
-				.attr("markerHeight", "4")
-				.attr("orient", "auto")
-				.append("path")
-					.attr("class", "message-arrow")
-					.attr("d", "M 0 0 L 10 5 L 0 10 z")
+			// var marker = svgContainer.append("marker")
+				// .attr("id", "message-marker")
+				// .attr("viewBox", "0 0 10 10")
+				// .attr("refX", "10")
+				// .attr("refY", "5")
+				// .attr("markerWidth", "5")
+				// .attr("markerHeight", "4")
+				// .attr("orient", "auto")
+				// .append("path")
+					// .attr("class", "message-arrow")
+					// .attr("d", "M 0 0 L 10 5 L 0 10 z")
 
+					
+		var markerInstance = svgContainer.select(".message-marker")
+		if (markerInstance.node() == null) {
+				svgContainer
+					.append("marker")
+					.attr("id", "message-marker")
+					.attr("class", "message-marker")
+					.attr("viewBox", "0 0 10 10")
+					.attr("refX", "10")
+					.attr("refY", "5")
+					.attr("markerWidth", "5")
+					.attr("markerHeight", "4")
+					.attr("orient", "auto")
+					.append("path")
+						.attr("class", "message-arrow")
+						.attr("d", "M 0 0 L 10 5 L 0 10 z")
+			}
+					
 			// DATA
 		var _laneItems0 = arrayUtils()
 			.array_names_from_props(_messages0, _itemProps)
