@@ -1,5 +1,5 @@
 /* 																	*/
-/* d3lanes-component-lanes.js   		*/
+/* d3lanes-component-rang.js   		*/
 /* 																	*/
 
 if (typeof require === "function") {
@@ -8,7 +8,7 @@ if (typeof require === "function") {
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3lanesComponentLanes = global.d3lanesComponentLanes || {})));
+  (factory((global.d3lanesComponentRang = global.d3lanesComponentRang || {})));
 }(this, function (exports) { 'use strict';
 
 // _____________ coordsUtils

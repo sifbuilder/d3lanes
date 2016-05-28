@@ -17,7 +17,10 @@ if (typeof require === "function") {
 		// store
 		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
 		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))	
-		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+
+		// store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
+		store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
+
 		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
 		var actions = d3lanesActions.ActionCreators
 
