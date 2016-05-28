@@ -4,13 +4,14 @@
 
 if (typeof require === "function") {
 	var d3 = require('./d3.v4.0.0-alpha.40.js')
+	var d3lanesComponentRang = require('./d3lanes-component-rang.js')
 	var d3lanesComponentLanes = require('./d3lanes-component-lanes.js')
 	var d3lanesComponentCourt = require('./d3lanes-component-court.js')
 	var d3lanesComponentParticles = require('./d3lanes-component-particles.js')
 	var d3lanesReducer = require('./d3lanes-reducer.js')
 	var d3lanesStore = require('./d3lanes-store.js')
 	var d3lanesActions = require('./d3lanes-actions.js')
-	var d3lanesControls = require('./d3lanes-controls.js')
+	var d3lanesControls = require('./d3controls.js')
 }	
 
 		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
