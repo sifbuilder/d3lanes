@@ -56,7 +56,7 @@ function reducerDebug(state = initialStateDebug, action) {
 
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
-				case ActionTypes.SET_FPS:
+				case ActionTypes.SET_FPS:			
 						return setFps(state, action)
 				case ActionTypes.SWITCH_DEBUGMODE:
 						console.log('SWITCH_DEBUGMODE')

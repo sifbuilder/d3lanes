@@ -44,7 +44,6 @@ if (typeof require === "function") {
 			itemsGroup.enter()	
 				.append("g")
 					.classed("notices", true)	// items
-					
 			// _________________________________ render Notice Update
 				var errorNotice = (state.reducerCourt.notice) ? state.reducerCourt.notice : ""
 				var noticeToShow = " " +

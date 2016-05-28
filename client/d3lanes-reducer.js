@@ -60,7 +60,6 @@ var reducer = combineReducers({
 
 
 var r = reducer()
-console.log("r: " , r)
 
 exports.reducer = reducer;
 }));

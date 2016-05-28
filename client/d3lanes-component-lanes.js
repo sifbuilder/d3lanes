@@ -214,7 +214,7 @@ var intransition = false
 														store.dispatch(actions.deleteLane(d))
 											return 0
 										})
-										.remove(function(){console.log("++++++++++++++++++")})										
+										.remove(function(){})										
 									
 					// laneElems UPDATE	texts
 						var actorTexts = laneElems.select("text")

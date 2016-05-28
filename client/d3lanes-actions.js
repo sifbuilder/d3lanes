@@ -27,7 +27,7 @@ function merge_objects(ctt1,ctt2){
 }
 
 var ActionTypes = merge_objects(d3lanesActionsCourt.ActionTypes,
-		d3lanesActionsDebug.ActionTypesDebug,
+		d3lanesActionsDebug.ActionTypes,
 		d3lanesActionsLanes.ActionTypes,
 		d3lanesActionsParticles.ActionTypes)
 		

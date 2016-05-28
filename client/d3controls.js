@@ -22,18 +22,18 @@ if (typeof require === "function") {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
-		// ______________________________ ensureCanMutateNextListeners
+		// ____________________ ensureCanMutateNextListeners
 		function ensureCanMutateNextListeners() {
 				if (nextListeners === currentListeners) {
 					nextListeners = currentListeners.slice()
 				}
 		}			
 		
-		// ____________________ tc
-		function tc() {}
+		// ____________________ stepper
+		function stepper() {}
 		
 		// ____________________ start
-		tc.start = function start() {
+		stepper.start = function start() {
 					var periodFactor = store.getState().reducerConfig.periodFactor					
 					var beatTime = store.getState().reducerConfig.beatTime				
 					var periodTime = periodFactor	* beatTime // items added						
@@ -44,7 +44,7 @@ if (typeof require === "function") {
 					var vLow = store.getState().reducerLanes.messagesCursorLow
 					var vHigh = store.getState().reducerLanes.messagesCursorHigh
 
-					var tf = setInterval(function() {
+					var tickfn = setInterval(function() {
 						
 						var currentMode = store.getState().reducerCourt.currentMode
 																	
@@ -54,10 +54,10 @@ if (typeof require === "function") {
 						}									
 					}, periodTime)
 					
-					return tc
+					return stepper
 			}
-		// ______________________________ subscribe
-	 tc.subscribe = function subscribe (listener) {
+		// ____________________ subscribe
+	 stepper.subscribe = function subscribe (listener) {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
@@ -67,10 +67,10 @@ if (typeof require === "function") {
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
 
-			return tc
+			return stepper
 		}
 		
-		return tc
+		return stepper
 }		
 
 /*  -------------          */
@@ -82,27 +82,26 @@ if (typeof require === "function") {
 		var currentListeners = []
 		var nextListeners = currentListeners
 
-		// ______________________________ ensureCanMutateNextListeners
+		// ____________________ ensureCanMutateNextListeners
 		function ensureCanMutateNextListeners() {
 				if (nextListeners === currentListeners) {
 					nextListeners = currentListeners.slice()
 				}
 		}			
 		
-		// ____________________ tc
-		function tc() {}
+		// ____________________ ticker
+		function ticker() {}
 		
 		// ____________________ start
-		tc.start = function start() {
+		ticker.start = function start() {
 			// Anatomy of a video game
 			// Misuse of the requestAnimationFrme()
 					var started = false
 					var rfps = 60
 					var last = performance.now()
 					var timestamp = 0
-					var ticker = function(timestamp) {
-						window.requestAnimationFrame(ticker)
-					
+					var tickfn = function(timestamp) {
+						window.requestAnimationFrame(tickfn)
 						if (timestamp != undefined) rfps = rfps * 0.9 + (1000/(timestamp-last)) * 0.1
 						if (timestamp != undefined) last = timestamp						
 						while( performance.now() - timestamp < 17 ) {}
@@ -116,12 +115,12 @@ if (typeof require === "function") {
 					}
 					if (!started) {
 						started = true
-						ticker()	
+						tickfn()	
 					}
-					return tc
+					return ticker
 			}
-		// ______________________________ subscribe
-	 tc.subscribe = function subscribe (listener) {
+		// ____________________ subscribe
+	 ticker.subscribe = function subscribe (listener) {
 			if (typeof listener !== 'function') {
 				throw new Error('Expected listener to be a function.')
 			}
@@ -131,10 +130,10 @@ if (typeof require === "function") {
 			ensureCanMutateNextListeners()
 			nextListeners.push(listener)
 
-			return tc
+			return ticker
 		}
 
-		return tc
+		return ticker
 }		
 		
 

@@ -14,13 +14,14 @@ if (typeof require === "function") {
 	var d3lanesControls = require('./d3controls.js')
 }	
 
+		// store
 		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
 		store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))	
 		store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
 		store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
 		var actions = d3lanesActions.ActionCreators
 
-		
+		// container
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
 			.selectAll('svg')
 				.data(['svg'])		
@@ -34,16 +35,19 @@ if (typeof require === "function") {
 				.style('border', '1px solid darkgrey')
 				.attr('viewbox',"0 0 3 2")										
 				
+		// start keyboad controls - mode on arrows
 		d3lanesControls.kbdControls(store, d3.select('svg')).startKeybKeyEvents()
+
+		// start mouse controls - particles on mouse click
 		d3lanesControls.mouseControls(store).startMouseEvents(d3.select('svg'))
 
+		// set messages on lanes
 		store.dispatch(actions.setRecordsCollection(
 				store.getState().reducerConfig.messageCollection))
 		store.dispatch(actions.setRecordsFetched(true))
 		
-		// jff
-		store.dispatch(actions.startParticles())
-		store.dispatch(actions.createParticles({
+		// early particles
+		var createParticlesPayload = {
 				particlesPerTick: store.getState().reducerParticles.particlesPerTick * 5,
 				x: store.getState().reducerCourt.svgWidth / 2, 
 				y: store.getState().reducerCourt.svgWidth / 2,
@@ -52,35 +56,38 @@ if (typeof require === "function") {
 				randNormal: store.getState().reducerConfig.randNormal,
 				randNormal2:store.getState().reducerConfig.randNormal2,
 				lanes: [],
-		}))
+		}
+		store.dispatch(actions.startParticles())
+		store.dispatch(actions.createParticles(createParticlesPayload))
 		store.dispatch(actions.stopParticles())
 		
-		
-		var ticker = d3lanesControls.tickControls(store)
-		.subscribe(
-			store.compose(
+		// particles on tick
+		var tickParticlesPayload = {
+				width: store.getState().reducerCourt.svgWidth,
+				height: store.getState().reducerCourt.svgHeight,
+				gravity: store.getState().reducerConfig.gravity,
+				lanes: store.getState().reducerLanes.lanes
+			}
+		var tickParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.tickParticles,
-				function() { return {
-											width: store.getState().reducerCourt.svgWidth,
-											height: store.getState().reducerCourt.svgHeight,
-											gravity: store.getState().reducerConfig.gravity,
-											lanes: store.getState().reducerLanes.lanes
-										}
-									}
-			))
+				store.valuefn(tickParticlesPayload)
+			)
+		var ticker = d3lanesControls.tickControls(store)
+		.subscribe(tickParticlesLauncher)
 		.start()
 		
-		var walker = d3lanesControls.stepControls(store)
-		.subscribe(
-			store.compose(
-				store.dispatch,
-				actions.setRecords,
-				function() { return {
+		// lanes on step
+		var setRecordsPayload = {
 											itemSpan: store.getState().reducerConfig.itemSpan,
 											currentMode: store.getState().reducerCourt.currentMode
 										}
-									}
-			))
+		var setRecordsLauncher = store.compose(
+				store.dispatch,
+				actions.setRecords,
+				store.valuefn(setRecordsPayload)
+			)								
+		var walker = d3lanesControls.stepControls(store)
+		.subscribe(setRecordsLauncher)
 		.start()
 			

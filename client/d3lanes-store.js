@@ -23,6 +23,12 @@
 			}
 		}
 		
+		// ______________________________ valuefn
+		function valuefn(value) {
+				var r = function() { return value }
+				return r
+		}
+		
 		// ______________________________ getState
 		function getState() {
 			return currentState
@@ -93,14 +99,19 @@
 			return action
 		}
 		
+		
+		
+		// ______________________________ return		
 		return {
 			compose: compose,
 			dispatch: dispatch,
 			subscribe: subscribe,
-			getState: getState
+			getState: getState,
+			valuefn: valuefn,
 		}
 	}
 		
-	exports.createStore = createStore;
+
+		exports.createStore = createStore;
 }));
 
