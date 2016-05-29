@@ -3,7 +3,7 @@
 /* 																	*/
 
 if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.40.js')
+		var d3 = require('./d3.v4.0.0-alpha.44.js')
 	}
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -72,7 +72,6 @@ var intransition = false
 								.text("N")
 			}
 			var textHeight = dummyText.node().getBBox().height				
-		// console.log("__textHeight: ", textHeight)
 	
 			
 // Adapted from https://github.com/tj/d3-dot
@@ -101,10 +100,8 @@ var gen = function(n, l, h, s) {
 	// from svg to center
 	// get center, height, width
 	// transition to center
-// console.log("_width/_height: ", _width, _height)	
 var _hsr = parseInt(_width/2)
 var _vsr = parseInt(_height/2)
-// console.log("_hsr/_hc: ", _vsr, _vsr)	
 
 								
 	// lane elems trasition

@@ -24,8 +24,8 @@ var keyMirror = function(obj, prefix) {
   return ret;
 }
 
-
 var cttsParticles = {
+	INTRODUCE_PARTICLES: '',
 	CREATE_PARTICLES: '',
 	START_PARTICLES: '',
 	START_TICKER: '',
@@ -39,6 +39,20 @@ var ActionTypes = keyMirror(cttsParticles, '')
 
 // ____________________ actions PARTICLES
 var ActionCreators = {
+	introduceParticles(obj) {
+    return {
+        type: ActionTypes.INTRODUCE_PARTICLES,	// introduceParticles
+        N: obj.particlesPerTick,
+        x: obj.x,
+        y: obj.y,
+				randNormal: obj.randNormal,
+ 				randNormal2: obj.randNormal2,
+				xInit: obj.xInit,
+				xEnd: obj.xEnd,
+ 				lanes: obj.lanes,
+ 				generating: obj.generating,
+    }
+  },
 	createParticles(obj) {
     return {
         type: ActionTypes.CREATE_PARTICLES,	// createParticles
@@ -69,7 +83,6 @@ var ActionCreators = {
     };
 	},
 	tickParticles(arg) {
-// console.log("arg: ", JSON.stringify(arg.lanes, null, 2))	
     return {
          type: ActionTypes.TICK_PARTICLES,		// tickParticles
 				 width: arg.width,

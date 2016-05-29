@@ -3,7 +3,7 @@
 /* 														*/
 
 	if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.40.js')
+		var d3 = require('./d3.v4.0.0-alpha.44.js')
 		var d3lanesActions = require('./d3lanes-actions-particles.js')
 	}
 	
@@ -52,6 +52,7 @@ var initialStateParticles = {
 			particles: [],
 			particleIndex: 0,
 			particlesGenerating: false,
+			particlesIntroduced: false,
 			particlesPerTick: 33,
 			particleRadio: 9,
 }
@@ -60,22 +61,46 @@ function reducerParticles(state = initialStateParticles, action) {
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
-  	console.log("START_PARTICLES", action)		
+					console.log("START_PARTICLES")		
           return Object.assign({}, state, {
                 particlesGenerating: true
             })
 						
         case ActionTypes.STOP_PARTICLES:			// stopParticles
-				console.log("STOP_PARTICLES")
+					console.log("STOP_PARTICLES")
             return Object.assign({}, state, {
                 particlesGenerating: false
             });
 						
-						
-        case ActionTypes.CREATE_PARTICLES:			// createParticles
-	console.log("CREATE_PARTICLES", JSON.stringify(action, null, 2))		
-
+        case ActionTypes.INTRODUCE_PARTICLES:			// introduceParticles
+					console.log("INTRODUCE_PARTICLES")		
 					var newParticles = state.particles.slice(0)
+					var i
+					if (state.particlesIntroduced == false) {
+						console.log("INTRODUCE_PARTICLES")		
+					for (i = 0; i < action.N * 5; i++) {
+								var particle = {id: state.particleIndex+i,
+																		x: action.x,
+																		y: action.y,
+																		closestLaneDown: {id: 'init', x: action.xInit},
+																		closestLaneUp: {id: 'end', x: action.xEnd},
+																	}
+										particle.vector = [particle.id%2 ? - action.randNormal() : action.randNormal(),
+																		 - action.randNormal2() * 3.3];
+										newParticles.unshift(particle);
+							}
+							return Object.assign({}, state, {
+									particles: newParticles,
+									particleIndex: state.particleIndex+i+1,
+									particlesIntroduced: true
+							})
+					} else {
+							return state
+					}
+							
+        case ActionTypes.CREATE_PARTICLES:			// createParticles
+					console.log("CREATE_PARTICLES")		
+						var newParticles = state.particles.slice(0)
 						var i
 						if (action.generating == true) {
 							for (i = 0; i < action.N; i++) {

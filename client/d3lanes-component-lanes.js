@@ -3,7 +3,7 @@
 /* 																	*/
 
 if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.40.js')
+		var d3 = require('./d3.v4.0.0-alpha.44.js')
 	}
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :

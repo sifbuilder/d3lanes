@@ -3,7 +3,7 @@
 /* 														*/
 
 	if (typeof require === "function") {
-		var d3 = require('./d3.v4.0.0-alpha.40.js')
+		var d3 = require('./d3.v4.0.0-alpha.44.js')
 		var d3lanesActions = require('./d3lanes-actions-court.js')
 	}
 	
@@ -58,7 +58,7 @@ var initialStateCourt = {
 			keybKeyEventsStarted: false,
 			tickerStarted: false,
 			lastTick: 0,
-			mousePos: [null, null],
+			mousePos: [200, 300],
 }
 
 function reducerCourt(state = initialStateCourt, action) {

@@ -23,14 +23,6 @@
 			}
 		}
 		
-		// ______________________________ valuefn
-		function valuefn(value) {
-				console.log("__________ valuefn: ", JSON.stringify(value, null, 2) )		
-		
-				var r = function() { return value }
-				return r
-		}
-		
 		// ______________________________ getState
 		function getState() {
 			return currentState
@@ -109,7 +101,6 @@
 			dispatch: dispatch,
 			subscribe: subscribe,
 			getState: getState,
-			valuefn: valuefn,
 		}
 	}
 		

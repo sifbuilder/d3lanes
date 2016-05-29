@@ -3,7 +3,7 @@
 /* 																	*/
 
 if (typeof require === "function") {
-	var d3 = require('./d3.v4.0.0-alpha.40.js')
+	var d3 = require('./d3.v4.0.0-alpha.44.js')
 }	
 
 (function (global, factory) {
@@ -167,32 +167,10 @@ if (typeof require === "function") {
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
 				
-				
-			// var createParticlesPayload = {
-						// particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-						// x: store.getState().reducerCourt.mousePos[0], 
-						// y: store.getState().reducerCourt.mousePos[1],
-						// xInit: store.getState().reducerCourt.leftBorder,
-						// xEnd: store.getState().reducerCourt.svgWidth, 
-						// randNormal: store.getState().reducerConfig.randNormal,
-						// randNormal2: store.getState().reducerConfig.randNormal2,
-						// lanes: store.getState().reducerLanes.lanes,
-						// generating: store.getState().reducerParticles.particlesGenerating,
-			// }
-
-		// var r = store.valuefn(createParticlesPayload)
-				// console.log("__________ r: ", JSON.stringify(r(createParticlesPayload), null, 2) )		
-		
-				
-				
 				var listeners = currentListeners = nextListeners
 				for (var i = 0; i < listeners.length; i++) {
-		console.log("__________ listener:", i) 
 					listeners[i]()
 				}	
-
-			// var r1 = store.valuefn(createParticlesPayload)
-				// console.log("__________ r1: ", JSON.stringify(r1(createParticlesPayload), null, 2) )		
 			
 		}
 
@@ -201,7 +179,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.start")		
 					svg.on('mousedown', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -260,7 +237,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('touchstart', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -322,7 +298,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('mousemove', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -381,7 +356,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('touchmove', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -439,7 +413,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('mouseup', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -497,7 +470,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('touchend', 	function() {controlAction(this)})
 					return controlApi
 		}
@@ -557,7 +529,6 @@ if (typeof require === "function") {
 		
 		// ____________________ start
 		controlApi.start = function start(svg) {
-					console.log("__________ controlApi.star")		
 					svg.on('mouseleave', 	function() {controlAction(this)})
 					return controlApi
 		}

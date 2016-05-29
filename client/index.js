@@ -3,7 +3,7 @@
 /* 														*/
 
 if (typeof require === "function") {
-	var d3 = require('./d3.v4.0.0-alpha.40.js')
+	var d3 = require('./d3.v4.0.0-alpha.44.js')
 
 	var d3lanesComponentCourt = require('./d3lanes-component-court.js')
 	var d3lanesComponentLanes = require('./d3lanes-component-lanes.js')
@@ -16,17 +16,17 @@ if (typeof require === "function") {
 	var d3lanesControls = require('./d3controls.js')
 }	
 
-		// actions
+		/* actions */
 		var actions = d3lanesActions.ActionCreators
 
-		// store
+		/* store */
 		var store = d3lanesStore.createStore(d3lanesReducer.reducer, d3lanesReducer.reducer())
 			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
 			// store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
 
-		// container
+		/* container */
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
 			.selectAll('svg')
 				.data(['svg'])		
@@ -40,12 +40,8 @@ if (typeof require === "function") {
 				.style('border', '1px solid darkgrey')
 				.attr('viewbox',"0 0 3 2")										
 				
-		// start keyboad controls - mode on arrows
+		/* start keyboad controls - mode on arrows */
 		d3lanesControls.kbdControls(store, d3.select('svg')).startKeybKeyEvents()
-
-		// start mouse controls - particles on mouse click
-		// d3lanesControls.mouseControls(store).startMouseEvents(d3.select('svg'))
-		
 
 			var stopParticlesLauncher = store.compose(
 				store.dispatch,
@@ -55,7 +51,7 @@ if (typeof require === "function") {
 				store.dispatch,
 				actions.startParticles
 			)	
-			var createParticlesPayload = {
+			var createParticlesPayload = function () { return {
 						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 						x: store.getState().reducerCourt.mousePos[0], 
 						y: store.getState().reducerCourt.mousePos[1],
@@ -65,19 +61,21 @@ if (typeof require === "function") {
 						randNormal2: store.getState().reducerConfig.randNormal2,
 						lanes: store.getState().reducerLanes.lanes,
 						generating: store.getState().reducerParticles.particlesGenerating,
-			}
-			
-			var f = function() {
-				return function () {console.log("__hello___")}
-			}
+			}}
 			
 			var createParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.createParticles,
-				store.valuefn(createParticlesPayload),
-				f
+				createParticlesPayload
 			)
-		
+
+			/* early particles */
+			var initiateParticlesLauncher = store.compose(
+				store.dispatch,
+				actions.introduceParticles,
+				createParticlesPayload
+			)
+			
 			d3lanesControls.mouseDownControl(store)
 					.subscribe(startParticlesLauncher)
 					.subscribe(createParticlesLauncher)
@@ -108,55 +106,53 @@ if (typeof require === "function") {
 					.subscribe(stopParticlesLauncher)
 						.start(d3.select('svg'))
 	
-
-		// set messages on lanes
+		/* set messages on lanes */
 		store.dispatch(actions.setRecordsCollection(
 				store.getState().reducerConfig.messageCollection))
 		store.dispatch(actions.setRecordsFetched(true))
 		
-		// early particles
-		var createParticlesPayload = {
-				particlesPerTick: store.getState().reducerParticles.particlesPerTick * 5,
-				x: store.getState().reducerCourt.svgWidth / 2, 
-				y: store.getState().reducerCourt.svgWidth / 2,
-				xInit: 0, 
-				xEnd: store.getState().reducerCourt.svgWidth, 
-				randNormal: store.getState().reducerConfig.randNormal,
-				randNormal2:store.getState().reducerConfig.randNormal2,
-				lanes: [],
-				generating: true,
-		}
-		store.dispatch(actions.startParticles())
-		store.dispatch(actions.createParticles(createParticlesPayload))
-		store.dispatch(actions.stopParticles())
-		
-		// particles on tick
-		var tickParticlesPayload = {
+
+		/* particles on tick */
+		var tickParticlesPayload = function () { return {
 				width: store.getState().reducerCourt.svgWidth,
 				height: store.getState().reducerCourt.svgHeight,
 				gravity: store.getState().reducerConfig.gravity,
 				lanes: store.getState().reducerLanes.lanes
-			}
+			}}
 		var tickParticlesLauncher = store.compose(
 				store.dispatch,
 				actions.tickParticles,
-				store.valuefn(tickParticlesPayload)
+				tickParticlesPayload
 			)
 		var ticker = d3lanesControls.tickControls(store)
 		.subscribe(tickParticlesLauncher)
 		.start()
 		
-		// lanes on step
-		var setRecordsPayload = {
-											itemSpan: store.getState().reducerConfig.itemSpan,
-											currentMode: store.getState().reducerCourt.currentMode
-										}
+		/* lanes on step  */
+		var setRecordsPayload = function () { return {
+				itemSpan: store.getState().reducerConfig.itemSpan,
+				currentMode: store.getState().reducerCourt.currentMode
+			}}
 		var setRecordsLauncher = store.compose(
 				store.dispatch,
 				actions.setRecords,
-				store.valuefn(setRecordsPayload)
+				setRecordsPayload
 			)								
 		var walker = d3lanesControls.stepControls(store)
-		.subscribe(setRecordsLauncher)
 		.start()
+	
+
+		var dolanes = true
+		if (dolanes) {
+				walker.subscribe(setRecordsLauncher)
+				walker.subscribe(initiateParticlesLauncher)
+		}
+
+					
+					
+					
+					
+					
+					
+		
 			
