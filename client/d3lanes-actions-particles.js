@@ -50,6 +50,7 @@ var ActionCreators = {
 				xInit: obj.xInit,
 				xEnd: obj.xEnd,
  				lanes: obj.lanes,
+ 				generating: obj.generating,
     }
   },
 	startParticles() {

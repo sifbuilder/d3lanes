@@ -72,37 +72,41 @@ function reducerParticles(state = initialStateParticles, action) {
         case ActionTypes.CREATE_PARTICLES:			// createParticles
 						var newParticles = state.particles.slice(0)
 						var i
-            for (i = 0; i < action.N; i++) {
-						
-										var ref = parseInt(action.x)
-										var closestLaneUp = action.lanes
-														.filter(function (d) {return d.x >= ref} )
-														.reduce(function (prev, curr) {
-											return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
-										}, {id: 'end', x: action.xEnd})
-										
-										var closestLaneDown = action.lanes
-														.filter(function (d) {return d.x <= ref} )
-														.reduce(function (prev, curr) {
-											return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
-										}, {id: 'init', x: action.xInit})									
-						
-                var particle = {id: state.particleIndex+i,
-																	x: action.x,
-																	y: action.y,
-																	closestLaneDown: closestLaneDown,
-																	closestLaneUp: closestLaneUp,
-																};
+						if (action.generating == true) {
+							for (i = 0; i < action.N; i++) {
+							
+											var ref = parseInt(action.x)
+											var closestLaneUp = action.lanes
+															.filter(function (d) {return d.x >= ref} )
+															.reduce(function (prev, curr) {
+												return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
+											}, {id: 'end', x: action.xEnd})
+											
+											var closestLaneDown = action.lanes
+															.filter(function (d) {return d.x <= ref} )
+															.reduce(function (prev, curr) {
+												return (Math.abs(curr.x - ref) < Math.abs(prev.x - ref) ? curr : prev);
+											}, {id: 'init', x: action.xInit})									
+							
+									var particle = {id: state.particleIndex+i,
+																		x: action.x,
+																		y: action.y,
+																		closestLaneDown: closestLaneDown,
+																		closestLaneUp: closestLaneUp,
+																	};
 
-                particle.vector = [particle.id%2 ? - action.randNormal() : action.randNormal(),
-                                   - action.randNormal2()*3.3];
+									particle.vector = [particle.id%2 ? - action.randNormal() : action.randNormal(),
+																		 - action.randNormal2()*3.3];
 
-                newParticles.unshift(particle);
-            }
-            return Object.assign({}, state, {
-                particles: newParticles,
-                particleIndex: state.particleIndex+i+1
-            });
+									newParticles.unshift(particle);
+							}
+							return Object.assign({}, state, {
+									particles: newParticles,
+									particleIndex: state.particleIndex+i+1
+							})
+						} else {
+							return state
+						}
 						
 						
         case ActionTypes.TICK_PARTICLES:		// tickParticles

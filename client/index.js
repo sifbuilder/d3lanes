@@ -61,6 +61,7 @@ if (typeof require === "function") {
 				randNormal: store.getState().reducerConfig.randNormal,
 				randNormal2:store.getState().reducerConfig.randNormal2,
 				lanes: [],
+				generating: true,
 		}
 		store.dispatch(actions.startParticles())
 		store.dispatch(actions.createParticles(createParticlesPayload))
@@ -79,7 +80,7 @@ if (typeof require === "function") {
 				store.valuefn(tickParticlesPayload)
 			)
 		var ticker = d3lanesControls.tickControls(store)
-		// .subscribe(tickParticlesLauncher)
+		.subscribe(tickParticlesLauncher)
 		.start()
 		
 		// lanes on step
@@ -93,6 +94,6 @@ if (typeof require === "function") {
 				store.valuefn(setRecordsPayload)
 			)								
 		var walker = d3lanesControls.stepControls(store)
-		// .subscribe(setRecordsLauncher)
+		.subscribe(setRecordsLauncher)
 		.start()
 			

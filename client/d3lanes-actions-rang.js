@@ -26,105 +26,32 @@ var keyMirror = function(obj, prefix) {
 
 
 var consts = {
-	DELETE_LANE: '',
-	SET_LANE: '',
-	SET_LANES: '',
-	SET_MESSAGES: '',
-	SET_RECORDS: '',
-	WALK_DOWN_RECORDS: '',
-	WALK_UP_RECORDS: '',
-	SET_RECORDS_COLLECTION: '',
-	SET_RECORDS_FETCHED: '',
-	UPDATE_MESSAGES: '',
+	DELETE_RANG: '',
+	SET_RANG: '',
+	SET_RANGS: '',
 }
 
 
 var ActionTypes = keyMirror(consts, '')
 
-// ____________________ actions LANES
+// ____________________ actions RANGS
 var ActionCreators = {
-	setRecordsFetched(areRecordsFetched) {
+	deleteRang(rang) {
     return {
-        type: ActionTypes.SET_RECORDS_FETCHED,
-        areRecordsFetched: areRecordsFetched,
-    }
-  },
-	setRecordsCollection(recordsCollection) {
-    return {
-        type: ActionTypes.SET_RECORDS_COLLECTION,
-        recordsCollection: recordsCollection,
-    }
-  },
-	setRecords(argObj) {	// SET_RECORDS
-    return {
-        type: ActionTypes.SET_RECORDS,
-        itemSpan: argObj.itemSpan,
-        mode: argObj.currentMode,
-    }
-  },
-	walkDownRecords(itemSpan, mode) {	// WALK_DOWN_RECORDS
-    return {
-        type: ActionTypes.WALK_DOWN_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
-    }
-  },
-	walkUpRecords(itemSpan, mode) {	// WALK_UP_RECORDS
-    return {
-        type: ActionTypes.WALK_UP_RECORDS,
-        itemSpan: itemSpan,
-        mode: mode,
-    }
-  },
-	increaseCursorLow() {		// INCREASE_CURSOR_LOW
-    return {
-        type: ActionTypes.INCREASE_CURSOR_LOW,	
+        type: ActionTypes.DELETE_RANG,
+        rang: rang,
 		}
   },
-	decreaseCursorLow() {
+	setRang(rang) {
     return {
-        type: ActionTypes.DECREASE_CURSOR_LOW,
+        type: ActionTypes.SET_RANG,
+        rang: rang,
 		}
   },
-	increaseCursorHigh() {
+	setRangs(rangs) {
     return {
-        type: ActionTypes.INCREASE_CURSOR_HIGH,
-		}
-  },
-	decreaseCursorHigh() {
-    return {
-        type: ActionTypes.DECREASE_CURSOR_HIGH,
-		}
-  },
-	deleteLane(lane) {
-    return {
-        type: ActionTypes.DELETE_LANE,
-        lane: lane,
-		}
-  },
-	setLane(lane) {
-    return {
-        type: ActionTypes.SET_LANE,
-        lane: lane,
-		}
-  },
-	setLanes(lanes) {
-    return {
-        type: ActionTypes.SET_LANES,
-        lanes: lanes,
-		}
-  },
-	setMessages(messages) {
-    return {
-        type: ActionTypes.SET_MESSAGES,
-        messages: messages,
-		}
-  },
-	updateMessages(messages) {
-    return {
-       type: ActionTypes.UPDATE_MESSAGES,
-       cursorLow: cursorLow,
-       cursorHigh: cursorHigh,
+        type: ActionTypes.SET_RANGS,
+        rangs: rangs,
 		}
   },
 }

@@ -143,13 +143,8 @@ if (typeof require === "function") {
 	function mouseControls(store) {
 		var store = store
 
-		// ____________________ mouseEventsActions
+		// ____________________ mousedown
 			var mousedown = function mousedown(svg) {
-
-// console.log("event: ", d3.event)
-				// var e = window.event;
-				var e = d3.event
-				pauseEvent(e);
 
 				function pauseEvent(e){
 						if(e.stopPropagation) e.stopPropagation();
@@ -159,24 +154,28 @@ if (typeof require === "function") {
 						return false;
 				}			
 			
+				var e = d3.event
+				pauseEvent(e);
+
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				store.dispatch(actions.startParticles())
 				store.dispatch(actions.createParticles({
 						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-						x: coords[0], 
-						y: coords[1],
-						xInit: 0, 
+						x: store.getState().reducerCourt.mousePos[0], 
+						y: store.getState().reducerCourt.mousePos[1],
+						xInit: store.getState().reducerCourt.leftBorder
 						xEnd: store.getState().reducerCourt.svgWidth, 
 						randNormal: store.getState().reducerConfig.randNormal,
 						randNormal2: store.getState().reducerConfig.randNormal2,
 						lanes: store.getState().reducerLanes.lanes,
+						generating: true,
 				}))
 			}
+			
+		// ____________________ touchstart
 			var touchstart = function touchstart(svg) {
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateTouchPos(coords[0], coords[1]))
-				store.dispatch(actions.startParticles())
 				store.dispatch(actions.createParticles({
 						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
 						x: coords[0], 
@@ -186,37 +185,45 @@ if (typeof require === "function") {
 						randNormal: store.getState().reducerConfig.randNormal,
 						randNormal2: store.getState().reducerConfig.randNormal2,
 						lanes: store.getState().reducerLanes.lanes,
+						generating: store.getState().reducerParticles.particlesGenerating,
 				}))
 			}
+			
+		// ____________________ mousemove
 			var mousemove = function mousemove(svg) {
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				var generating = store.getState().reducerParticles.particlesGenerating
-				if (generating === true) {
-
-					store.dispatch(actions.createParticles({
-							particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-							x: coords[0], 
-							y: coords[1],
-							xInit: 0, 
-							xEnd: store.getState().reducerCourt.svgWidth, 
-							randNormal: store.getState().reducerConfig.randNormal,
-							randNormal2: store.getState().reducerConfig.randNormal2,
-							lanes: store.getState().reducerLanes.lanes,
-					}))
-				}
+				store.dispatch(actions.createParticles({
+						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+						x: coords[0], 
+						y: coords[1],
+						xInit: 0, 
+						xEnd: store.getState().reducerCourt.svgWidth, 
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						lanes: store.getState().reducerLanes.lanes,
+						generating: store.getState().reducerParticles.particlesGenerating,
+				}))
 			}
+			
+		// ____________________ touchmove
 			var touchmove = function touchmove(svg) {
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateTouchPos(coords[0], coords[1]))
 			}	
+			
+		// ____________________ mouseup
 			var mouseup = function mouseup(svg) {
 				store.dispatch(actions.stopParticles())
 				var generating = store.getState().reducerParticles.particlesGenerating
 			}	
+			
+		// ____________________ touchend
 			var touchend = function touchend(svg) {
 				store.dispatch(actions.stopParticles())
 			}	
+			
+		// ____________________ mouseleave
 			var mouseleave = function mouseleave(svg) {
 				store.dispatch(actions.stopParticles())
 			}		
@@ -224,7 +231,8 @@ if (typeof require === "function") {
 		// ____________________ controlfn
 	  function controlfn() {
  		}
-			// ____________________ startMouseEvents
+		
+		// ____________________ startMouseEvents
 		controlfn.startMouseEvents = function startMouseEvents(svg) {
 					svg.on('mousedown', 	function() {mousedown(this)})
 					svg.on('touchstart', 	function() {touchstart(this)})

@@ -48,21 +48,64 @@ function combineReducers(reducers) {
 
 // _____________ LANES
 var initialStateThis = {
-			lanes: [],
-			lanesIndex: 0,
-			messages: [],
-			records: [],
-			recordsCollection: [],
-			areRecordsFetched: false,
-			messagesCursorLow: 0,
-			messagesCursorHigh: 0,
+			n: 10,
+			s: 50,
+			rangs: [],
+			rangsIndex: 0,
 	}
 	
 function reducerThis(state = initialStateThis, action) {
 	if (action == null) return state
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
+
+				case ActionTypes.SET_RANG:		// setRang
+				
+					var rangs = state.rangs
+					var items = {}
+					var result = rangs.filter(function( obj ) {
+							return obj.id == action.rang.id;
+						});
+							
+					if (result.length === 0) {			// add
+						items = {rangs: [
+							{
+											id: action.rang.id,
+											x: action.rang.x,
+											y: action.rang.y,
+											width: action.rang.width,
+											height: action.rang.height,
+							}, 
+							...rangs
+						]}
+					} else {												// edit
+							items = {rangs: rangs.map(rang =>
+								rang.id === action.rang.id ?
+									Object.assign({}, rang, { 
+											id: action.rang.id,
+											x: action.rang.x,
+											y: action.rang.y,
+											width: action.rang.width,
+											height: action.rang.height,
+									}) :
+									rang
+							)}
+					}
+					
+					 var r = Object.assign({}, state,
+						items,
+						{
+							rangsIndex: items.rangs.length
+						});
+						return r
+
 		
+        case ActionTypes.SET_RANGS:
+ 						console.log('SET_RANGS')
+            return Object.assign({}, state, {
+                rangs: action.rangs,
+                rangsIndex: Object.keys(action.rangs).length
+            })
 
 						
         default:

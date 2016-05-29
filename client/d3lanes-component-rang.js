@@ -19,10 +19,10 @@ var intransition = false
 	
 // _____________ render
 	function render(newState) {
+	
 		if (intransition == true) {
 			return
 		}
-
 
 		// DATA
 		// store previous - will not change during render
@@ -31,18 +31,15 @@ var intransition = false
 		var _messages1 = state.reducerRang.records
 		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
 		var _itemProps = state.reducerConfig.itemProps
+		
+		var _n = state.reducerRang.n
+		var _s = state.reducerRang.s
 	
 		var _width = state.reducerCourt.svgWidth
 		var _height = state.reducerCourt.svgHeight
 
 		var _svgid = state.reducerConfig.container
 
-	var state = {
-	n: 20,
-	s: 10,
-	width: 200,
-	height: 200
-}
 		// SVG
 		var svgContainer = d3.select('body')
 			.selectAll('svg')
@@ -58,12 +55,12 @@ var intransition = false
 					.style('height', _height)
 
 			var itemsGroup = d3.select('svg')
-				.selectAll('g.rang')		// items
+				.selectAll('g.rangs')		// items
 				.data(['items'])
 					
 			itemsGroup.enter()	
 				.append("g")
-					.classed("rang", true)	// items
+					.classed("rangs", true)	// items
 
    // Some dummy text is needed so that we can get the text height before attaching text to any paths.
   		var dummyText = svgContainer.select(".dummyText")
@@ -75,17 +72,17 @@ var intransition = false
 								.text("N")
 			}
 			var textHeight = dummyText.node().getBBox().height				
-		console.log("__textHeight: ", textHeight)
+		// console.log("__textHeight: ", textHeight)
 	
 			
 // Adapted from https://github.com/tj/d3-dot
 var gen = function(n, l, h, s) {
   var data = []
-
   for (var i = n; i; i--) {
     data.push({
       x: Math.random() * l | 0,
       y: Math.random() * h | 0,
+			id: i,
 			s: s
     })
   }
@@ -93,24 +90,88 @@ var gen = function(n, l, h, s) {
   return data
 }
 	
-var rects = svgContainer.selectAll("rects")
+
+	var state = {
+	n: 10,
+	s: 50,
+	width: _width,
+	height: _height
+}
+
+	// from svg to center
+	// get center, height, width
+	// transition to center
+// console.log("_width/_height: ", _width, _height)	
+var _hsr = parseInt(_width/2)
+var _vsr = parseInt(_height/2)
+// console.log("_hsr/_hc: ", _vsr, _vsr)	
+
+								
+	// lane elems trasition
+		var elemsTransition = d3.transition()
+			.duration(1000)
+			.ease(d3.easeLinear)
+	
+var rangGroups = svgContainer.select("g.rangs")
+						.selectAll("g.rang")
             .data(gen(state.n, state.width, state.height, state.s), 
-							function(d, i) { return d.id || (d.id = ++i); })
+							function(d, i) { 
+									return d.id || (d.id = ++i); })
+							
+var newRangGroups = 	rangGroups						
             .enter()
-            .append("g")
-						.attr("class", "rect")
+							.append("g")
+							.attr("class", "rang")
+							.attr("id", function (d) { return d.id; })
 
 
-rects.append('rect')
-            .attr("x", function (d) { return d.x; })
+var rangRects = newRangGroups.append('rect')
+            .attr("id", function (d) { return d.id; })
+            .attr("class", "rect")
+						.attr("x", function (d) { return d.x; })
             .attr("y", function (d) { return d.y; })
             .attr("height", function (d) { return 2 * d.s; })
             .attr("width", function (d) { return 2 * d.s; })
 						.attr("stroke-width", 1)
 						.attr("stroke", "grey")
+						.style("fill", "transparent")
 
-
-
+rangGroups.select("rect")	
+ 						.attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; })
+            .attr("height", function (d) { return 2 * d.s; })
+            .attr("width", function (d) { return 2 * d.s; })
+						.transition(elemsTransition)
+							.attr("height", function (d) { return 0 * d.s; })
+							.attr("width", function (d) { return 0 * d.s; })
+															.attrTween("s", function(d) {
+																return function (t) {
+											var item = {id: d.id,
+														id: d.id,
+														x: d.x,
+														y: d.y,
+														width: (1 - t) * 2 * d.s,
+														height: (1 - t) * 2 * d.s, 
+												}
+											store.dispatch(actions.setRang(item))				
+																			return t
+																}
+															})
+							.on("start", function start() {		
+										intransition = true
+								})
+							.on("end", function end() {	
+									
+									intransition = false
+							})								
+						
+rangGroups.exit()
+		.transition(elemsTransition)
+			.style("opacity", function(d) {
+							store.dispatch(actions.deleteRang(d))
+				return 0
+			})
+			.remove(function(){})
 
 
 
