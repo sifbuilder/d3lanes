@@ -122,8 +122,7 @@ if (typeof require === "function") {
 				tickParticlesPayload
 			)
 		var ticker = d3lanesControls.tickControls(store)
-		.subscribe(tickParticlesLauncher)
-		.start()
+			.start()
 		
 		/* lanes on step  */
 		var setRecordsPayload = function () { return {
@@ -135,14 +134,12 @@ if (typeof require === "function") {
 				actions.setRecords,
 				setRecordsPayload
 			)								
-		var walker = d3lanesControls.stepControls(store)
+		var stepper = d3lanesControls.stepControls(store)
 		.start()
 	
 
 		var mode = 'lanes' // lanes, rangs
 		if (mode == 'lanes') {
-				walker.subscribe(setRecordsLauncher)
-				walker.subscribe(initiateParticlesLauncher)
 				mouseDown.subscribe(startParticlesLauncher)
 				mouseDown.subscribe(createParticlesLauncher)
 				touchStart.subscribe(startParticlesLauncher)
@@ -152,6 +149,9 @@ if (typeof require === "function") {
 				mouseUp.subscribe(stopParticlesLauncher)
 				touchEnd.subscribe(stopParticlesLauncher)
 				mouseLeave.subscribe(stopParticlesLauncher)
+				ticker.subscribe(tickParticlesLauncher)
+				stepper.subscribe(setRecordsLauncher)
+				stepper.subscribe(initiateParticlesLauncher)
 
 		} else if (mode == 'rangs') {
 				mouseDown.subscribe(initRangsLauncher)
