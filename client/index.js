@@ -24,12 +24,13 @@ if (typeof require === "function") {
 			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
-			// store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
+			store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
 
 		/* container */
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
 			.selectAll('svg')
-				.data(['svg'])		
+				.data(['svg'])
+				
 		var svgContainerNew = svgContainer.enter()
 			.append("svg")
 				.attr("id", store.getState().reducerConfig.containerId)
@@ -75,35 +76,31 @@ if (typeof require === "function") {
 				actions.introduceParticles,
 				createParticlesPayload
 			)
+
+			var initRangsLauncher = store.compose(
+				store.dispatch,
+				actions.initRangs
+			)
 			
-			d3lanesControls.mouseDownControl(store)
-					.subscribe(startParticlesLauncher)
-					.subscribe(createParticlesLauncher)
+			var mouseDown = d3lanesControls.mouseDownControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.touchStartControl(store)
-					.subscribe(startParticlesLauncher)
-					.subscribe(createParticlesLauncher)
+			var touchStart = d3lanesControls.touchStartControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.mouseMoveControl(store)
-					.subscribe(createParticlesLauncher)
+			var mouseMove = d3lanesControls.mouseMoveControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.touchMoveControl(store)
-					.subscribe(createParticlesLauncher)
+			var touchMove = d3lanesControls.touchMoveControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.mouseUpControl(store)
-					.subscribe(stopParticlesLauncher)
+			var mouseUp = d3lanesControls.mouseUpControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.touchEndControl(store)
-					.subscribe(stopParticlesLauncher)
+			var touchEnd = d3lanesControls.touchEndControl(store)
 						.start(d3.select('svg'))
 	
-			d3lanesControls.mouseLeaveControl(store)
-					.subscribe(stopParticlesLauncher)
+			var mouseLeave = d3lanesControls.mouseLeaveControl(store)
 						.start(d3.select('svg'))
 	
 		/* set messages on lanes */
@@ -142,10 +139,23 @@ if (typeof require === "function") {
 		.start()
 	
 
-		var dolanes = true
-		if (dolanes) {
+		var mode = 'lanes' // lanes, rangs
+		if (mode == 'lanes') {
 				walker.subscribe(setRecordsLauncher)
 				walker.subscribe(initiateParticlesLauncher)
+				mouseDown.subscribe(startParticlesLauncher)
+				mouseDown.subscribe(createParticlesLauncher)
+				touchStart.subscribe(startParticlesLauncher)
+				touchStart.subscribe(createParticlesLauncher)
+				mouseMove.subscribe(createParticlesLauncher)
+				touchMove.subscribe(createParticlesLauncher)
+				mouseUp.subscribe(stopParticlesLauncher)
+				touchEnd.subscribe(stopParticlesLauncher)
+				mouseLeave.subscribe(stopParticlesLauncher)
+
+		} else if (mode == 'rangs') {
+				mouseDown.subscribe(initRangsLauncher)
+		
 		}
 
 					

@@ -46,12 +46,13 @@ function combineReducers(reducers) {
 }
 
 
-// _____________ LANES
+// _____________ RANGS
 var initialStateThis = {
 			n: 10,
 			s: 50,
 			rangs: [],
 			rangsIndex: 0,
+			initRangs: false,
 	}
 	
 function reducerThis(state = initialStateThis, action) {
@@ -59,7 +60,13 @@ function reducerThis(state = initialStateThis, action) {
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
 
-				case ActionTypes.SET_RANG:		// setRang
+       case ActionTypes.INIT_RANGS:
+ 						console.log('INIT_RANGS')
+            return Object.assign({}, state, {
+                initRangs: true
+            })
+
+			case ActionTypes.SET_RANG:		// setRang
 				
 					var rangs = state.rangs
 					var items = {}

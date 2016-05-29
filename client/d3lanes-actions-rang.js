@@ -27,6 +27,7 @@ var keyMirror = function(obj, prefix) {
 
 var consts = {
 	DELETE_RANG: '',
+	INIT_RANGS: '',
 	SET_RANG: '',
 	SET_RANGS: '',
 }
@@ -40,6 +41,12 @@ var ActionCreators = {
     return {
         type: ActionTypes.DELETE_RANG,
         rang: rang,
+		}
+  },
+	initRangs(rangs) {
+    return {
+        type: ActionTypes.INIT_RANGS,
+        initRangs: true,
 		}
   },
 	setRang(rang) {

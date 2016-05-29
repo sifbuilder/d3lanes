@@ -28,16 +28,17 @@ var intransition = false
 		// store previous - will not change during render
 		var _messages0 = stateRang.reducerRang.records || []
 		var state = stateRang = newState
-		var _messages1 = state.reducerRang.records
-		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime
-		var _itemProps = state.reducerConfig.itemProps
 		
+		if (state.reducerRang.initRangs == false ) return
+
+		
+		var _messages1 = state.reducerRang.records
+		var _fadeTime = state.reducerConfig.fadeFactor * state.reducerConfig.beatTime		
+		var _itemProps = state.reducerConfig.itemProps
 		var _n = state.reducerRang.n
 		var _s = state.reducerRang.s
-	
 		var _width = state.reducerCourt.svgWidth
 		var _height = state.reducerCourt.svgHeight
-
 		var _svgid = state.reducerConfig.container
 
 		// SVG
