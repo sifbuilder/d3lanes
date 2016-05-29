@@ -60,17 +60,22 @@ function reducerParticles(state = initialStateParticles, action) {
 	var ActionTypes = d3lanesActions.ActionTypes
     switch (action.type) {
         case ActionTypes.START_PARTICLES:				// startParticles
-            return Object.assign({}, state, {
+  	console.log("START_PARTICLES", action)		
+          return Object.assign({}, state, {
                 particlesGenerating: true
-            });
+            })
+						
         case ActionTypes.STOP_PARTICLES:			// stopParticles
+				console.log("STOP_PARTICLES")
             return Object.assign({}, state, {
                 particlesGenerating: false
             });
 						
 						
         case ActionTypes.CREATE_PARTICLES:			// createParticles
-						var newParticles = state.particles.slice(0)
+	console.log("CREATE_PARTICLES", JSON.stringify(action, null, 2))		
+
+					var newParticles = state.particles.slice(0)
 						var i
 						if (action.generating == true) {
 							for (i = 0; i < action.N; i++) {

@@ -47,6 +47,7 @@ function combineReducers(reducers) {
 
 // _____________ COURT
 var initialStateCourt = {
+			leftBorder: 0,		// 
 			svgHeight: 400,		// 
 			svgWidth: 600,		// 
 			keys: [],

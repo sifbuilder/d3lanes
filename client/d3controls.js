@@ -137,116 +137,445 @@ if (typeof require === "function") {
 }		
 		
 
-/*  -------------          */
-/*    mouseControls        */
-/*  -------------          */
-	function mouseControls(store) {
+/*  -------------       		   */
+/*    mouseDownControls        */
+/*  -------------       		   */
+	function mouseDownControl(store) {
 		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
 
-		// ____________________ mousedown
-			var mousedown = function mousedown(svg) {
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
 
-				function pauseEvent(e){
+		function pauseEvent(e){
 						if(e.stopPropagation) e.stopPropagation();
 						if(e.preventDefault) e.preventDefault();
 						e.cancelBubble=true;
 						e.returnValue=false;
 						return false;
 				}			
-			
+
+		function controlAction(svg) {
 				var e = d3.event
 				pauseEvent(e);
 
 				var coords  = d3.mouse(svg);
 				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				store.dispatch(actions.createParticles({
-						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-						x: store.getState().reducerCourt.mousePos[0], 
-						y: store.getState().reducerCourt.mousePos[1],
-						xInit: store.getState().reducerCourt.leftBorder
-						xEnd: store.getState().reducerCourt.svgWidth, 
-						randNormal: store.getState().reducerConfig.randNormal,
-						randNormal2: store.getState().reducerConfig.randNormal2,
-						lanes: store.getState().reducerLanes.lanes,
-						generating: true,
-				}))
-			}
-			
-		// ____________________ touchstart
-			var touchstart = function touchstart(svg) {
-				var coords  = d3.mouse(svg);
-				store.dispatch(actions.updateTouchPos(coords[0], coords[1]))
-				store.dispatch(actions.createParticles({
-						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-						x: coords[0], 
-						y: coords[1],
-						xInit: 0, 
-						xEnd: store.getState().reducerCourt.svgWidth, 
-						randNormal: store.getState().reducerConfig.randNormal,
-						randNormal2: store.getState().reducerConfig.randNormal2,
-						lanes: store.getState().reducerLanes.lanes,
-						generating: store.getState().reducerParticles.particlesGenerating,
-				}))
-			}
-			
-		// ____________________ mousemove
-			var mousemove = function mousemove(svg) {
-				var coords  = d3.mouse(svg);
-				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
-				store.dispatch(actions.createParticles({
-						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
-						x: coords[0], 
-						y: coords[1],
-						xInit: 0, 
-						xEnd: store.getState().reducerCourt.svgWidth, 
-						randNormal: store.getState().reducerConfig.randNormal,
-						randNormal2: store.getState().reducerConfig.randNormal2,
-						lanes: store.getState().reducerLanes.lanes,
-						generating: store.getState().reducerParticles.particlesGenerating,
-				}))
-			}
-			
-		// ____________________ touchmove
-			var touchmove = function touchmove(svg) {
-				var coords  = d3.mouse(svg);
-				store.dispatch(actions.updateTouchPos(coords[0], coords[1]))
-			}	
-			
-		// ____________________ mouseup
-			var mouseup = function mouseup(svg) {
-				store.dispatch(actions.stopParticles())
-				var generating = store.getState().reducerParticles.particlesGenerating
-			}	
-			
-		// ____________________ touchend
-			var touchend = function touchend(svg) {
-				store.dispatch(actions.stopParticles())
-			}	
-			
-		// ____________________ mouseleave
-			var mouseleave = function mouseleave(svg) {
-				store.dispatch(actions.stopParticles())
-			}		
+				
+				
+			// var createParticlesPayload = {
+						// particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+						// x: store.getState().reducerCourt.mousePos[0], 
+						// y: store.getState().reducerCourt.mousePos[1],
+						// xInit: store.getState().reducerCourt.leftBorder,
+						// xEnd: store.getState().reducerCourt.svgWidth, 
+						// randNormal: store.getState().reducerConfig.randNormal,
+						// randNormal2: store.getState().reducerConfig.randNormal2,
+						// lanes: store.getState().reducerLanes.lanes,
+						// generating: store.getState().reducerParticles.particlesGenerating,
+			// }
 
-		// ____________________ controlfn
-	  function controlfn() {
- 		}
+		// var r = store.valuefn(createParticlesPayload)
+				// console.log("__________ r: ", JSON.stringify(r(createParticlesPayload), null, 2) )		
 		
-		// ____________________ startMouseEvents
-		controlfn.startMouseEvents = function startMouseEvents(svg) {
-					svg.on('mousedown', 	function() {mousedown(this)})
-					svg.on('touchstart', 	function() {touchstart(this)})
-					svg.on('mousemove', 	function() {mousemove(this)})
-					svg.on('touchmove', 	function() {touchmove(this)})
-					svg.on('mouseup', 		function() {mouseup(this)})
-					svg.on('mouseleave', 	function() {mouseleave(this)})
-					svg.on('mouseleave', 	function() {mouseleave(this)})
+				
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+		console.log("__________ listener:", i) 
+					listeners[i]()
+				}	
+
+			// var r1 = store.valuefn(createParticlesPayload)
+				// console.log("__________ r1: ", JSON.stringify(r1(createParticlesPayload), null, 2) )		
+			
 		}
 
-	return controlfn
+		// ____________________ controlApi
+		function controlApi() {}
 		
-}
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.start")		
+					svg.on('mousedown', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}
 
+	/*  -------------       		   */
+/*    touchStartControls        */
+/*  -------------       		   */
+	function touchStartControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('touchstart', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}
+		
+
+
+
+/*  -------------       		   */
+/*    mouseMoveControls        */
+/*  -------------       		   */
+	function mouseMoveControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('mousemove', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}		
+
+/*  -------------       		   */
+/*    touchMoveControls        */
+/*  -------------       		   */
+	function touchMoveControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('touchmove', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}		
+/*  -------------       		   */
+/*    mouseUpControls        */
+/*  -------------       		   */
+	function mouseUpControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('mouseup', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}		
+/*  -------------       		   */
+/*    touchEndControls        */
+/*  -------------       		   */
+	function touchEndControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('touchend', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}		
+		
+			
+/*  -------------       		   */
+/*    mouseLeaveControls        */
+/*  -------------       		   */
+	function mouseLeaveControl(store) {
+		var store = store
+		var currentListeners = []
+		var nextListeners = currentListeners
+
+	// ____________________ ensureCanMutateNextListeners
+		function ensureCanMutateNextListeners() {
+				if (nextListeners === currentListeners) {
+					nextListeners = currentListeners.slice()
+				}
+		}			
+
+		function pauseEvent(e){
+						if(e.stopPropagation) e.stopPropagation();
+						if(e.preventDefault) e.preventDefault();
+						e.cancelBubble=true;
+						e.returnValue=false;
+						return false;
+				}			
+
+		function controlAction(svg) {
+				var e = d3.event
+				pauseEvent(e);
+
+				var coords  = d3.mouse(svg);
+				store.dispatch(actions.updateMousePos(coords[0], coords[1]))
+				
+				var listeners = currentListeners = nextListeners
+				for (var i = 0; i < listeners.length; i++) {
+					listeners[i]()
+				}									
+		}
+
+		// ____________________ controlApi
+		function controlApi() {}
+		
+		// ____________________ start
+		controlApi.start = function start(svg) {
+					console.log("__________ controlApi.star")		
+					svg.on('mouseleave', 	function() {controlAction(this)})
+					return controlApi
+		}
+		// ____________________ subscribe
+	 controlApi.subscribe = function subscribe (listener) {
+			if (typeof listener !== 'function') {
+				throw new Error('Expected listener to be a function.')
+			}
+			var isSubscribed = true
+			ensureCanMutateNextListeners()
+			nextListeners.push(listener)
+			return controlApi
+		}
+		
+		return controlApi
+	}	
+		
+			
 /*  -------------          */
 /*    kbdControls        */
 /*  -------------          */
@@ -868,10 +1197,18 @@ function tipControls (scope) {		// selection
 
 		return drag;			
 }		
+
 		
+exports.mouseDownControl = mouseDownControl
+exports.touchStartControl = touchStartControl
+exports.mouseMoveControl = mouseMoveControl
+exports.touchMoveControl = touchMoveControl
+exports.mouseUpControl = mouseUpControl
+exports.touchEndControl = touchEndControl
+exports.mouseLeaveControl = mouseLeaveControl
+
 exports.stepControls = stepControls
 exports.tickControls = tickControls
-exports.mouseControls = mouseControls
 exports.kbdControls = kbdControls
 exports.dragControls = dragControls
 exports.posControls = posControls

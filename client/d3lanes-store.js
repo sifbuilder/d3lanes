@@ -25,6 +25,8 @@
 		
 		// ______________________________ valuefn
 		function valuefn(value) {
+				console.log("__________ valuefn: ", JSON.stringify(value, null, 2) )		
+		
 				var r = function() { return value }
 				return r
 		}

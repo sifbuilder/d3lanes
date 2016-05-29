@@ -63,6 +63,7 @@ var intransition = false
 											.attr('r', function(d, i, a) { return particleRadio })
 					            .style("fill", function (d) {
 												var r = d.closestLaneUp.x / (d.closestLaneUp.x - d.closestLaneDown.x)
+// console.log("____________ r: ", r)												
 												return color( ((3*r)%10 / 10) + (Math.random()* 3 /10))
 											})
 											.style("fill-opacity", 0.2)

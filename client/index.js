@@ -24,7 +24,7 @@ if (typeof require === "function") {
 			store.subscribe(store.compose(d3lanesComponentCourt.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentLanes.render, store.getState))
 			store.subscribe(store.compose(d3lanesComponentParticles.render, store.getState))	
-			store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
+			// store.subscribe(store.compose(d3lanesComponentRang.render, store.getState))
 
 		// container
 		var svgContainer = d3.select(store.getState().reducerConfig.containerElem)
@@ -44,7 +44,70 @@ if (typeof require === "function") {
 		d3lanesControls.kbdControls(store, d3.select('svg')).startKeybKeyEvents()
 
 		// start mouse controls - particles on mouse click
-		d3lanesControls.mouseControls(store).startMouseEvents(d3.select('svg'))
+		// d3lanesControls.mouseControls(store).startMouseEvents(d3.select('svg'))
+		
+
+			var stopParticlesLauncher = store.compose(
+				store.dispatch,
+				actions.stopParticles
+			)			
+			var startParticlesLauncher = store.compose(
+				store.dispatch,
+				actions.startParticles
+			)	
+			var createParticlesPayload = {
+						particlesPerTick: store.getState().reducerParticles.particlesPerTick,
+						x: store.getState().reducerCourt.mousePos[0], 
+						y: store.getState().reducerCourt.mousePos[1],
+						xInit: store.getState().reducerCourt.leftBorder,
+						xEnd: store.getState().reducerCourt.svgWidth, 
+						randNormal: store.getState().reducerConfig.randNormal,
+						randNormal2: store.getState().reducerConfig.randNormal2,
+						lanes: store.getState().reducerLanes.lanes,
+						generating: store.getState().reducerParticles.particlesGenerating,
+			}
+			
+			var f = function() {
+				return function () {console.log("__hello___")}
+			}
+			
+			var createParticlesLauncher = store.compose(
+				store.dispatch,
+				actions.createParticles,
+				store.valuefn(createParticlesPayload),
+				f
+			)
+		
+			d3lanesControls.mouseDownControl(store)
+					.subscribe(startParticlesLauncher)
+					.subscribe(createParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.touchStartControl(store)
+					.subscribe(startParticlesLauncher)
+					.subscribe(createParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.mouseMoveControl(store)
+					.subscribe(createParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.touchMoveControl(store)
+					.subscribe(createParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.mouseUpControl(store)
+					.subscribe(stopParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.touchEndControl(store)
+					.subscribe(stopParticlesLauncher)
+						.start(d3.select('svg'))
+	
+			d3lanesControls.mouseLeaveControl(store)
+					.subscribe(stopParticlesLauncher)
+						.start(d3.select('svg'))
+	
 
 		// set messages on lanes
 		store.dispatch(actions.setRecordsCollection(
